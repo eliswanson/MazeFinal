@@ -65,9 +65,6 @@ namespace CSharpMaze
             }
 
             CurrentRoom = rooms[0][0];
-
-			/** Throw current first room into first frame of board Remove if needed **/
-			this.board.CurrentRoom(currentRoom);
         }
 
         public void Answered(bool answer)

@@ -108,6 +108,7 @@ namespace CSharpMaze
 		//Controls the speed of how fast player moves and holds what key was pressed last
 		private int SPEED = 3;
 		private Key prevKey = new Key();
+		private int AtCurrentDoor;
 		private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
 			TriggerPlayerGif(1);
@@ -118,12 +119,12 @@ namespace CSharpMaze
 					UpdatePlayersDirection(0);
 				}
 
-				else if (Canvas.GetLeft(this.Player) + 2 < this.PlayerRoom.Width - this.Player.Width && (!PlayerHitSpecificTarget(3) || engine.CurrentRoom.Door4State == 3))
+				else if (Canvas.GetLeft(this.Player) + 2 < this.PlayerRoom.Width - this.Player.Width )
 				{
 					Canvas.SetLeft(this.Player, Canvas.GetLeft(this.Player) + SPEED);	
 				}
 
-				if (PlayerHitTarget())
+				else if (PlayerHitTarget() )
 				{
                     //Eli's testing for MazeDriver
                     engine.CurrentDoor = "Door4";
@@ -133,11 +134,11 @@ namespace CSharpMaze
                     myQuestionDriver.Display();
 					//Disable Keys
 					this.PreviewKeyDown -= Window_PreviewKeyDown;
+
+					AtCurrentDoor = 3;
 					// Used to test whether user hit door
 					Console.WriteLine("Hit");
 				}
-			
-                
             }
 
 			else if (e.Key == Key.Left)
@@ -147,12 +148,12 @@ namespace CSharpMaze
 					UpdatePlayersDirection(180);
 				}
 
-				else if (Canvas.GetLeft(this.Player) - 2 > 0 && (!PlayerHitSpecificTarget(1) || engine.CurrentRoom.Door2State == 3))
+				else if (Canvas.GetLeft(this.Player) - 2 > 0 )
 				{
 					Canvas.SetLeft(this.Player, Canvas.GetLeft(this.Player) - SPEED);
 				}
 
-				if (PlayerHitTarget())
+			else if (PlayerHitTarget())
 				{
                     //Eli's testing for MazeDriver
                     engine.CurrentDoor = "Door2";
@@ -163,6 +164,8 @@ namespace CSharpMaze
 
 					//Disable Keys
 					this.PreviewKeyDown -= Window_PreviewKeyDown;
+
+					AtCurrentDoor = 1;
 					// Used to test whether user hit door
 					Console.WriteLine("Hit");
 				}
@@ -178,13 +181,13 @@ namespace CSharpMaze
 					UpdatePlayersDirection(-90);
 				}
 
-				else if (Canvas.GetTop(this.Player) - 4 > 0 && (!PlayerHitSpecificTarget(0) || engine.CurrentRoom.Door1State == 3) )
+				else if (Canvas.GetTop(this.Player) - 4 > 0)
 				{
 
 					Canvas.SetTop(this.Player, Canvas.GetTop(this.Player) - SPEED);
 
 				}
-				if (PlayerHitTarget())
+				else if (PlayerHitTarget())
 				{
                     //Eli's testing for MazeDriver
                     engine.CurrentDoor = "Door1";
@@ -195,6 +198,8 @@ namespace CSharpMaze
 
 					//Disable Keys
 					this.PreviewKeyDown -= Window_PreviewKeyDown;
+
+					AtCurrentDoor = 0;
 					// Used to test whether user hit door
 					Console.WriteLine("Hit");
 				}
@@ -206,11 +211,11 @@ namespace CSharpMaze
 				{
 					UpdatePlayersDirection(90);
 				}
-				else if (Canvas.GetTop(this.Player) + 2 < this.PlayerRoom.Height - this.Player.Height && (!PlayerHitSpecificTarget(2) || engine.CurrentRoom.Door3State == 3))
+				else if (Canvas.GetTop(this.Player) + 2 < this.PlayerRoom.Height - this.Player.Height )
 				{
 					Canvas.SetTop(this.Player, Canvas.GetTop(this.Player) + SPEED);
 				}
-				if (PlayerHitTarget())
+				else if (PlayerHitTarget())
 				{
                     //Eli's testing for MazeDriver
                     engine.CurrentDoor = "Door3";
@@ -221,6 +226,8 @@ namespace CSharpMaze
 
 					//Disable Keys
 					this.PreviewKeyDown-=Window_PreviewKeyDown;
+
+					AtCurrentDoor = 2;
 					// Used to test whether user hit door
 					Console.WriteLine("Hit");
 
@@ -242,7 +249,7 @@ namespace CSharpMaze
 			Rect playerdetect = new Rect(new System.Windows.Point((double)Player.GetValue(Canvas.LeftProperty) + 5, (double)Player.GetValue(Canvas.TopProperty) + 5), new System.Windows.Size((double)Player.Width, (double)Player.Height - 5));
 			for (int i = 0; i < doorsHitBoxes.Length; i++)
 				if (playerdetect.IntersectsWith(doorsHitBoxes[i]))
-					if(!PlayerHitSpecificTarget(i))
+					if(PlayerHitSpecificTarget(i))
 						return true;
 			
 			return false;
@@ -257,17 +264,16 @@ namespace CSharpMaze
 				switch (door)
 				{
 					case 0:
-						return engine.CurrentRoom.Door1State == 3 || engine.CurrentRoom.Door1State == 2;		
+						return engine.CurrentRoom.Door1State != 3 && engine.CurrentRoom.Door1State != 2;		
 				
 					case 1:
-						return engine.CurrentRoom.Door2State == 3 || engine.CurrentRoom.Door1State == 2;
+						return engine.CurrentRoom.Door2State != 3 && engine.CurrentRoom.Door1State != 2;
 				
 					case 2:
-						return engine.CurrentRoom.Door3State == 3 || engine.CurrentRoom.Door1State == 2;
+						return engine.CurrentRoom.Door3State != 3 && engine.CurrentRoom.Door1State != 2;
 						
 					case 3:
-						return engine.CurrentRoom.Door4State == 3 || engine.CurrentRoom.Door1State == 2;
-					
+						return engine.CurrentRoom.Door4State != 3 && engine.CurrentRoom.Door1State != 2;	
 				}
 			}
 
@@ -290,26 +296,70 @@ namespace CSharpMaze
 		#region gather user information
 		private void btnTF_OK_Click(object sender, RoutedEventArgs e)
         {
-            engine.Answered(true);
-            //engine.Answered(myQuestionDriver.IsCorrect());
-            gbTFQues.Visibility = System.Windows.Visibility.Hidden;
+			if (rdTFAns1.IsChecked == true)
+			{ engine.Answered(myQuestionDriver.IsCorrect(rdTFAns1.Content.ToString()));
+				this.PreviewKeyDown += Window_PreviewKeyDown;
+				gbTFQues.Visibility = System.Windows.Visibility.Hidden;
+			}
 
+			else if (rdTFAns2.IsChecked == true)
+			{ engine.Answered(myQuestionDriver.IsCorrect(rdTFAns2.Content.ToString()));
+				this.PreviewKeyDown += Window_PreviewKeyDown;
+				gbTFQues.Visibility = System.Windows.Visibility.Hidden;
+			}
+
+			else
+			{ MessageBox.Show("Please input a valid input "); }
 
         }
 
-        private void btnMC_OK_Click(object sender, RoutedEventArgs e)
-        {
-            engine.Answered(true);
-            //engine.Answered(myQuestionDriver.IsCorrect());
-            gbMCQues.Visibility = System.Windows.Visibility.Hidden;
+		private void btnMC_OK_Click(object sender, RoutedEventArgs e)
+		{
+			if (rdMCAns1.IsChecked == true)
+			{
+				engine.Answered(myQuestionDriver.IsCorrect(rdMCAns1.Content.ToString()));
+				this.PreviewKeyDown += Window_PreviewKeyDown;
+				gbMCQues.Visibility = System.Windows.Visibility.Hidden;
+			}
+
+			else if (rdMCAns2.IsChecked == true)
+			{
+				engine.Answered(myQuestionDriver.IsCorrect(rdMCAns2.Content.ToString()));
+				this.PreviewKeyDown += Window_PreviewKeyDown;
+				gbMCQues.Visibility = System.Windows.Visibility.Hidden;
+			}
+
+			else if (rdMCAns3.IsChecked == true)
+			{
+				engine.Answered(myQuestionDriver.IsCorrect(rdMCAns3.Content.ToString()));
+				this.PreviewKeyDown += Window_PreviewKeyDown;
+				gbMCQues.Visibility = System.Windows.Visibility.Hidden;
+			}
+
+			else if (rdMCAns4.IsChecked == true)
+			{
+				engine.Answered(myQuestionDriver.IsCorrect(rdMCAns4.Content.ToString()));
+				this.PreviewKeyDown += Window_PreviewKeyDown;
+				gbMCQues.Visibility = System.Windows.Visibility.Hidden;
+			}
+
+			else
+			{ MessageBox.Show("Please input a valid input "); }
         }
 
         private void btnSA_OK_Click(object sender, RoutedEventArgs e)
         {
-            engine.Answered(true);
-            //engine.Answered(myQuestionDriver.IsCorrect());
-            gbSAQues.Visibility = System.Windows.Visibility.Hidden;
-        }
+			if (txtSA.Text.Length != 0)
+			{
+				engine.Answered(myQuestionDriver.IsCorrect(txtSA.Text));
+				this.PreviewKeyDown += Window_PreviewKeyDown;
+				gbSAQues.Visibility = System.Windows.Visibility.Hidden;
+			}
+
+			else
+			{ MessageBox.Show("Please input a valid input "); }
+
+		}
 #endregion
 	}
 }
