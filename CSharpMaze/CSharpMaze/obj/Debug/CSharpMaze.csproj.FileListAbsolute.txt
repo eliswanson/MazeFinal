@@ -61,3 +61,13 @@ C:\Users\Eli\Downloads\MazeFinal-playerMovement\MazeFinal-playerMovement\CSharpM
 C:\Users\Eli\Downloads\MazeFinal-playerMovement\MazeFinal-playerMovement\CSharpMaze\CSharpMaze\obj\Debug\CSharpMaze.exe
 C:\Users\Eli\Downloads\MazeFinal-playerMovement\MazeFinal-playerMovement\CSharpMaze\CSharpMaze\obj\Debug\CSharpMaze.pdb
 C:\Users\Eli\Downloads\MazeFinal-playerMovement\MazeFinal-playerMovement\CSharpMaze\CSharpMaze\obj\Debug\CSharpMaze.csprojResolveAssemblyReference.cache
+C:\Users\truth\Desktop\GitHub\TheFinal\MazeFinal\CSharpMaze\CSharpMaze\bin\Debug\EntityFramework.dll
+C:\Users\truth\Desktop\GitHub\TheFinal\MazeFinal\CSharpMaze\CSharpMaze\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\truth\Desktop\GitHub\TheFinal\MazeFinal\CSharpMaze\CSharpMaze\bin\Debug\System.Data.SQLite.dll
+C:\Users\truth\Desktop\GitHub\TheFinal\MazeFinal\CSharpMaze\CSharpMaze\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\truth\Desktop\GitHub\TheFinal\MazeFinal\CSharpMaze\CSharpMaze\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\truth\Desktop\GitHub\TheFinal\MazeFinal\CSharpMaze\CSharpMaze\bin\Debug\EntityFramework.xml
+C:\Users\truth\Desktop\GitHub\TheFinal\MazeFinal\CSharpMaze\CSharpMaze\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\truth\Desktop\GitHub\TheFinal\MazeFinal\CSharpMaze\CSharpMaze\bin\Debug\System.Data.SQLite.xml
+C:\Users\truth\Desktop\GitHub\TheFinal\MazeFinal\CSharpMaze\CSharpMaze\bin\Debug\System.Data.SQLite.dll.config
+C:\Users\truth\Desktop\GitHub\TheFinal\MazeFinal\CSharpMaze\CSharpMaze\obj\Debug\CSharpMaze.csprojResolveAssemblyReference.cache

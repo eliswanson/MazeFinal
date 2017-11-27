@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Drawing;
 using System.Windows.Media.Imaging;
 using System.Windows.Interop;
+using WpfAnimatedGif;
 
 namespace CSharpMaze
 {
@@ -19,28 +20,19 @@ namespace CSharpMaze
         private QuestionDriver myQuestionDriver;
         public MainWindow()
 		{
-			RoomState Testroom = new RoomState
-			{
-				Door1State = 0,
-				Door2State = 0,
-				Door3State = 0,
-				Door4State = 0
-			};
+			RoomState testRoom = new RoomState() { Door1State = 3, Door2State = 3, Door3State = 2, Door4State=2 };
 
 			InitializeComponent();
             engine = new MazeDriver(this.MiniMap, this.PlayerRoom);
-
+			
+			/***Remove these later once look and feel is established. Set them under properties ****/
             gbTFQues.Visibility = System.Windows.Visibility.Hidden;
             gbSAQues.Visibility = System.Windows.Visibility.Hidden;
             gbMCQues.Visibility = System.Windows.Visibility.Hidden;
+			/*************************** End Remove *************************************/
             myQuestionDriver = new QuestionDriver(gbMCQues, gbTFQues, gbSAQues);
+			GenerateHitBoxes();
 
-            doorsHitBoxes = new Rect[4];
-
-			doorsHitBoxes[0] = new Rect(new System.Windows.Point((double)PlayerRoom.Children[1].GetValue(Canvas.LeftProperty), (double)PlayerRoom.Children[1].GetValue(Canvas.TopProperty)), new System.Windows.Size((double)PlayerRoom.Children[1].GetValue(Canvas.WidthProperty), (double)PlayerRoom.Children[1].GetValue(Canvas.HeightProperty) - 10));
-			doorsHitBoxes[1] = new Rect(new System.Windows.Point(0, (double)PlayerRoom.Children[4].GetValue(Canvas.TopProperty)), new System.Windows.Size((double)PlayerRoom.Children[4].GetValue(Canvas.HeightProperty) - 10, (double)PlayerRoom.Children[4].GetValue(Canvas.WidthProperty)));
-			doorsHitBoxes[2] = new Rect(new System.Windows.Point((double)PlayerRoom.Children[7].GetValue(Canvas.LeftProperty), (double)PlayerRoom.Children[7].GetValue(Canvas.TopProperty) + 10), new System.Windows.Size((double)PlayerRoom.Children[7].GetValue(Canvas.WidthProperty), (double)PlayerRoom.Children[7].GetValue(Canvas.HeightProperty) - 10));
-			doorsHitBoxes[3] = new Rect(new System.Windows.Point((double)PlayerRoom.Children[10].GetValue(Canvas.LeftProperty) - ((double)PlayerRoom.Children[10].GetValue(Canvas.HeightProperty) - 10), (double)PlayerRoom.Children[10].GetValue(Canvas.TopProperty)), new System.Windows.Size((double)PlayerRoom.Children[10].GetValue(Canvas.HeightProperty), (double)PlayerRoom.Children[10].GetValue(Canvas.WidthProperty)));
 		}
 
 		void Save_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -103,10 +95,22 @@ namespace CSharpMaze
 			MessageBox.Show("New Game!");
 		}
 
-		private int SPEED = 4;
-		Key prevKey = new Key();
+		//Generate door Hitboxes
+		private void GenerateHitBoxes()
+		{
+			doorsHitBoxes = new Rect[4];
+			doorsHitBoxes[0] = new Rect(new System.Windows.Point((double)PlayerRoom.Children[1].GetValue(Canvas.LeftProperty), (double)PlayerRoom.Children[1].GetValue(Canvas.TopProperty)), new System.Windows.Size((double)PlayerRoom.Children[1].GetValue(Canvas.WidthProperty), (double)PlayerRoom.Children[1].GetValue(Canvas.HeightProperty) - 10));
+			doorsHitBoxes[1] = new Rect(new System.Windows.Point(0, (double)PlayerRoom.Children[4].GetValue(Canvas.TopProperty)), new System.Windows.Size((double)PlayerRoom.Children[4].GetValue(Canvas.HeightProperty) - 10, (double)PlayerRoom.Children[4].GetValue(Canvas.WidthProperty)));
+			doorsHitBoxes[2] = new Rect(new System.Windows.Point((double)PlayerRoom.Children[7].GetValue(Canvas.LeftProperty), (double)PlayerRoom.Children[7].GetValue(Canvas.TopProperty) + 10), new System.Windows.Size((double)PlayerRoom.Children[7].GetValue(Canvas.WidthProperty), (double)PlayerRoom.Children[7].GetValue(Canvas.HeightProperty) - 10));
+			doorsHitBoxes[3] = new Rect(new System.Windows.Point((double)PlayerRoom.Children[10].GetValue(Canvas.LeftProperty) - ((double)PlayerRoom.Children[10].GetValue(Canvas.HeightProperty) - 10), (double)PlayerRoom.Children[10].GetValue(Canvas.TopProperty)), new System.Windows.Size((double)PlayerRoom.Children[10].GetValue(Canvas.HeightProperty), (double)PlayerRoom.Children[10].GetValue(Canvas.WidthProperty)));
+		}
+
+		//Controls the speed of how fast player moves and holds what key was pressed last
+		private int SPEED = 3;
+		private Key prevKey = new Key();
 		private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
+			TriggerPlayerGif(1);
 			if (e.Key == Key.Right)
 			{
 				if (prevKey != Key.Right)
@@ -114,12 +118,12 @@ namespace CSharpMaze
 					UpdatePlayersDirection(0);
 				}
 
-				else if (Canvas.GetLeft(this.Player) + 2 < this.PlayerRoom.Width - this.Player.Width && !PlayerHitTarget())
+				else if (Canvas.GetLeft(this.Player) + 2 < this.PlayerRoom.Width - this.Player.Width && (!PlayerHitSpecificTarget(3) || engine.CurrentRoom.Door4State == 3))
 				{
 					Canvas.SetLeft(this.Player, Canvas.GetLeft(this.Player) + SPEED);	
 				}
 
-				else if (PlayerHitTarget())
+				if (PlayerHitTarget())
 				{
                     //Eli's testing for MazeDriver
                     engine.CurrentDoor = "Door4";
@@ -127,8 +131,12 @@ namespace CSharpMaze
 
                     //Testing for QuestionDriver
                     myQuestionDriver.Display();
-                }
-				prevKey = e.Key;
+					//Disable Keys
+					this.PreviewKeyDown -= Window_PreviewKeyDown;
+					// Used to test whether user hit door
+					Console.WriteLine("Hit");
+				}
+			
                 
             }
 
@@ -139,12 +147,12 @@ namespace CSharpMaze
 					UpdatePlayersDirection(180);
 				}
 
-				else if (Canvas.GetLeft(this.Player) - 2 > 0 && !PlayerHitTarget())
+				else if (Canvas.GetLeft(this.Player) - 2 > 0 && (!PlayerHitSpecificTarget(1) || engine.CurrentRoom.Door2State == 3))
 				{
 					Canvas.SetLeft(this.Player, Canvas.GetLeft(this.Player) - SPEED);
 				}
 
-				else if (PlayerHitTarget())
+				if (PlayerHitTarget())
 				{
                     //Eli's testing for MazeDriver
                     engine.CurrentDoor = "Door2";
@@ -152,8 +160,13 @@ namespace CSharpMaze
 
                     //Testing for QuestionDriver
                     myQuestionDriver.Display();
-                }
-				prevKey = e.Key;
+
+					//Disable Keys
+					this.PreviewKeyDown -= Window_PreviewKeyDown;
+					// Used to test whether user hit door
+					Console.WriteLine("Hit");
+				}
+			
 
             }
 
@@ -165,13 +178,13 @@ namespace CSharpMaze
 					UpdatePlayersDirection(-90);
 				}
 
-				else if (Canvas.GetTop(this.Player) - 2 > 0 && !PlayerHitTarget())
+				else if (Canvas.GetTop(this.Player) - 4 > 0 && (!PlayerHitSpecificTarget(0) || engine.CurrentRoom.Door1State == 3) )
 				{
 
 					Canvas.SetTop(this.Player, Canvas.GetTop(this.Player) - SPEED);
 
 				}
-				else if (PlayerHitTarget())
+				if (PlayerHitTarget())
 				{
                     //Eli's testing for MazeDriver
                     engine.CurrentDoor = "Door1";
@@ -179,9 +192,12 @@ namespace CSharpMaze
 
                     //Testing for QuestionDriver
                     myQuestionDriver.Display();
-                }
-				prevKey = e.Key;
-                
+
+					//Disable Keys
+					this.PreviewKeyDown -= Window_PreviewKeyDown;
+					// Used to test whether user hit door
+					Console.WriteLine("Hit");
+				}
             }
 
 			else if (e.Key == Key.Down)
@@ -190,11 +206,11 @@ namespace CSharpMaze
 				{
 					UpdatePlayersDirection(90);
 				}
-				else if (Canvas.GetTop(this.Player) + 2 < this.PlayerRoom.Height - this.Player.Height && !PlayerHitTarget())
+				else if (Canvas.GetTop(this.Player) + 2 < this.PlayerRoom.Height - this.Player.Height && (!PlayerHitSpecificTarget(2) || engine.CurrentRoom.Door3State == 3))
 				{
 					Canvas.SetTop(this.Player, Canvas.GetTop(this.Player) + SPEED);
 				}
-				else if (PlayerHitTarget())
+				if (PlayerHitTarget())
 				{
                     //Eli's testing for MazeDriver
                     engine.CurrentDoor = "Door3";
@@ -202,30 +218,77 @@ namespace CSharpMaze
 
                     //Testing for QuestionDriver
                     myQuestionDriver.Display();
-                }
+
+					//Disable Keys
+					this.PreviewKeyDown-=Window_PreviewKeyDown;
+					// Used to test whether user hit door
+					Console.WriteLine("Hit");
+
+				}
                 
             }
 
+			//Used to gather the previous key pressed
+			prevKey = e.Key;
 		}
-
+		// Updates player direction based on the key pressed.
 		private void UpdatePlayersDirection(double direction)
 		{
 			Player.RenderTransform = new RotateTransform(direction);
 		}
-
+		//Checks to see if player has hit any objects on board to trigger event.
 		private bool PlayerHitTarget()
-		{
+		{ 
 			Rect playerdetect = new Rect(new System.Windows.Point((double)Player.GetValue(Canvas.LeftProperty) + 5, (double)Player.GetValue(Canvas.TopProperty) + 5), new System.Windows.Size((double)Player.Width, (double)Player.Height - 5));
 			for (int i = 0; i < doorsHitBoxes.Length; i++)
-			{
 				if (playerdetect.IntersectsWith(doorsHitBoxes[i]))
-					return true;
+					if(!PlayerHitSpecificTarget(i))
+						return true;
+			
+			return false;
+		}
+		// Specifies if user has hit any specific door based.
+		private bool PlayerHitSpecificTarget(int door)
+		{
+			Rect playerdetect = new Rect(new System.Windows.Point((double)Player.GetValue(Canvas.LeftProperty) + 5, (double)Player.GetValue(Canvas.TopProperty) + 5), new System.Windows.Size((double)Player.Width, (double)Player.Height - 5));
+
+			if (playerdetect.IntersectsWith(doorsHitBoxes[door])) {
+
+				switch (door)
+				{
+					case 0:
+						return engine.CurrentRoom.Door1State == 3 || engine.CurrentRoom.Door1State == 2;		
+				
+					case 1:
+						return engine.CurrentRoom.Door2State == 3 || engine.CurrentRoom.Door1State == 2;
+				
+					case 2:
+						return engine.CurrentRoom.Door3State == 3 || engine.CurrentRoom.Door1State == 2;
+						
+					case 3:
+						return engine.CurrentRoom.Door4State == 3 || engine.CurrentRoom.Door1State == 2;
+					
+				}
 			}
 
 			return false;
 		}
 
-        private void btnTF_OK_Click(object sender, RoutedEventArgs e)
+		#region player frame movement
+		//Turns off player movement
+		int frames;
+		private void TriggerPlayerGif(int amount)
+		{
+			frames += amount;
+			if (frames >= ImageBehavior.GetAnimationController(this.Player).FrameCount || frames < 0)
+				frames = 0;
+
+			ImageBehavior.GetAnimationController(this.Player).GotoFrame(frames);
+		}
+#endregion
+
+		#region gather user information
+		private void btnTF_OK_Click(object sender, RoutedEventArgs e)
         {
             engine.Answered(true);
             //engine.Answered(myQuestionDriver.IsCorrect());
@@ -247,6 +310,6 @@ namespace CSharpMaze
             //engine.Answered(myQuestionDriver.IsCorrect());
             gbSAQues.Visibility = System.Windows.Visibility.Hidden;
         }
-
-    }
+#endregion
+	}
 }

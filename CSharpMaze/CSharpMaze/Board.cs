@@ -90,8 +90,6 @@ namespace CSharpMaze
 
 		private void DrawPlayerBoard(Canvas PlayerRoom)
 		{
-
-		
 			/** Adding door one to the top of player room **/
 			PlayerRoom.Children.Add(this.doorDisplay[0].DoorClosed());
 			PlayerRoom.Children.Add(this.doorDisplay[0].DoorOpened());

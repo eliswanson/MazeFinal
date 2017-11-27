@@ -6,8 +6,8 @@
 		xmlns:gif="http://wpfanimatedgif.codeplex.com"
         xmlns:local="clr-namespace:CSharpMaze"
         mc:Ignorable="d"
-		
 		Background="Black"
+		gif:ImageBehavior.AnimateInDesignMode="True"
         Title="MainWindow" Height="400" Width="510" PreviewKeyDown="Window_PreviewKeyDown"  WindowStartupLocation="CenterScreen">
 
 	<Window.InputBindings>
@@ -49,14 +49,8 @@
 				<Canvas.Background>
 					<ImageBrush ImageSource="dungeonFloor.jpg"/>
 				</Canvas.Background>
-
-
-				<Image gif:ImageBehavior.AnimatedSource="export_move.gif" x:Name="Player" Height="71" Canvas.Left="83" Canvas.Top="80" Width="80" ClipToBounds="True" RenderTransformOrigin="0.5,0.5"/>
-
-				<!--<MediaElement x:Name="Player"  Source="export_move.gif" LoadedBehavior="Manual" Stretch="Fill" Height="49" Canvas.Left="100" Canvas.Top="96" Width="49" MediaEnded="myGif_MediaEnded"/>-->
-				<!--<Rectangle Fill="White" Canvas.Left="218" Canvas.Top="38" Width="32" Height="174"/>-->
-
-            </Canvas>
+				<Image gif:ImageBehavior.AnimatedSource="export_move.gif" x:Name="Player" Height="71" Canvas.Left="83" Canvas.Top="80" Width="80" ClipToBounds="True" RenderTransformOrigin="0.5,0.5" gif:ImageBehavior.AutoStart="False"/>
+			</Canvas>
 			<Grid Grid.Column="1" Name="MiniMap" Margin="20 20 20 20">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
@@ -123,16 +117,15 @@
                 </Grid>
             </GroupBox>
             <!--Groupbox True/False-->
-            <GroupBox x:Name="gbTFQues" Header="True/False Question" HorizontalAlignment="Left" Height="85" Margin="10,4,0,0" VerticalAlignment="Top" Width="408" d:IsHidden="True">
-                <Grid x:Name="griTF">
-                    <Label x:Name="lblTFQues" Content="Question:" Margin="0,0,34,30" />
-                    <RadioButton x:Name="rdTFAns1" GroupName="TF" Content="Ans1" Margin="21,31,246,17"/>
-                    <RadioButton x:Name="rdTFAns2" GroupName="TF" Content="Ans2" Margin="155,31,0,17" HorizontalAlignment="Left" Width="109"/>
-                    <Button Margin="304,38,8,4" RenderTransformOrigin="1.787,1.952" x:Name="btnTF_OK" Content="OK" Click="btnTF_OK_Click" />
-                </Grid>
-            </GroupBox>
-
-            <!--Short Answer-->
+			<GroupBox x:Name="gbTFQues" Header="True/False Question" HorizontalAlignment="Left" Height="85" Margin="10,4,0,0" VerticalAlignment="Top" Width="408" d:IsHidden="True">
+				<Grid x:Name="griTF">
+					<Label x:Name="lblTFQues" Content="Question:" Margin="0,0,34,30" />
+					<RadioButton x:Name="rdTFAns1" GroupName="TF" Content="Ans1" Margin="21,31,246,17"/>
+					<RadioButton x:Name="rdTFAns2" GroupName="TF" Content="Ans2" Margin="155,31,0,17" HorizontalAlignment="Left" Width="109"/>
+					<Button Margin="304,38,8,4" RenderTransformOrigin="1.787,1.952" x:Name="btnTF_OK" Content="OK" Click="btnTF_OK_Click" />
+				</Grid>
+			</GroupBox>
+			<!--Short Answer-->
             <GroupBox x:Name="gbSAQues" Header="Short Asnwer Question" HorizontalAlignment="Left" Height="85" Margin="10,3,0,0" VerticalAlignment="Top" Width="420">
                 <Grid x:Name="griSA" Margin="12,32,233,9">
                     <Label x:Name="lblSAQues" Content="Question:" Margin="0,-30,-226,25" />
