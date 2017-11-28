@@ -10,6 +10,7 @@ namespace CSharpMaze
 {
     class MazeDriver
     {
+        #region fields and properties
         private Grid griMiniMap;
         private Canvas canBoard;
 
@@ -33,7 +34,7 @@ namespace CSharpMaze
             }
         }
         public string CurrentDoor { get; set; }
-
+#endregion
         public MazeDriver(Grid griMiniMap, Canvas canBoard)
         {
             this.griMiniMap = griMiniMap;
@@ -69,6 +70,7 @@ namespace CSharpMaze
 			this.board.CurrentRoom(rooms[0][0]);
         }
 
+        #region Updating minimap and board
         public void Answered(bool answer)
         {
             if (answer) //open door and move player
@@ -84,9 +86,7 @@ namespace CSharpMaze
                 map.UpdateMap(rooms[(int)location.Y][(int)location.X], location); //update minimap and moves star
                 board.CurrentRoom(rooms[(int)location.Y][(int)location.X]);
 
-                //Still need to update player character's location. Data binding?    
-
-                CurrentRoom = rooms[(int)location.Y][(int)location.X];
+                UpdateCurrentRoom(location);
             }
             else //lock door and run maze algorithm
             {
@@ -111,6 +111,20 @@ namespace CSharpMaze
             return true;
         }
 
+        public void OpenDoor(string door)
+        {
+            location = UpdateLocation(location, door); //change location of player 
+            map.UpdateMap(location);                    
+            board.CurrentRoom(UpdateCurrentRoom(location));
+            CurrentDoor = OppositeDoor(door);
+        }
+        #endregion
+
+        #region Helper methods for updating room and player location on minimap
+        private RoomState UpdateCurrentRoom(Point newLocation) //Updates CurrentRoom and returns it
+        {
+            return CurrentRoom = rooms[(int)newLocation.Y][(int)newLocation.X];
+        }
         private RoomState UpdateRoom(int newState, Point point, string door)
         {
             if (newState < 0 || newState > 3)
@@ -175,8 +189,9 @@ namespace CSharpMaze
 
             throw new Exception("Bad door string passed");
         }
+#endregion
 
-        private string OppositeDoor(string door)
+        public string OppositeDoor(string door)
         {
             switch (door)
             {

@@ -90,8 +90,8 @@ namespace CSharpMaze
 
         public void UpdateMap(System.Windows.Point playerLocation)
         {
-            this.player.SetValue(Grid.RowProperty, (int)playerLocation.X);
-            this.player.SetValue(Grid.ColumnProperty, (int)playerLocation.Y);
+            this.player.SetValue(Grid.RowProperty, (int)playerLocation.Y);
+            this.player.SetValue(Grid.ColumnProperty, (int)playerLocation.X);
         }
     }
 }

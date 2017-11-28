@@ -27,8 +27,8 @@ namespace CSharpMaze
 			myQuestionDriver = new QuestionDriver(gbMCQues, gbTFQues, gbSAQues);
 			GenerateHitBoxes();
 		}
-
-		void Save_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        #region Execute
+        void Save_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.CanExecute = true;
 		}
@@ -87,10 +87,11 @@ namespace CSharpMaze
 		{
 			MessageBox.Show("New Game!");
 		}
+#endregion
 
-		#region Generate HitBoxes
-		//Generate door Hitboxes
-		private void GenerateHitBoxes()
+        #region Generate HitBoxes
+        //Generate door Hitboxes
+        private void GenerateHitBoxes()
 		{
 			doorsHitBoxes = new Rect[4];
 			doorsHitBoxes[0] = new Rect(new System.Windows.Point((double)PlayerRoom.Children[1].GetValue(Canvas.LeftProperty), (double)PlayerRoom.Children[1].GetValue(Canvas.TopProperty)), new System.Windows.Size((double)PlayerRoom.Children[1].GetValue(Canvas.WidthProperty), (double)PlayerRoom.Children[1].GetValue(Canvas.HeightProperty) - 10));
@@ -126,17 +127,20 @@ namespace CSharpMaze
 
 				else if (PlayerHitTarget())
 				{
+                    string door = "Door4";
 
-					//Eli's testing for MazeDriver
-					engine.CurrentDoor = "Door4";
-					//engine.Answered(true);
+                    if (engine.CurrentRoom.Door4State == 0) //Door is currently closed, display question and disable movement. 
+                    {
+                        engine.CurrentDoor = door;
+                        myQuestionDriver.Display();
+                        this.PreviewKeyDown -= Window_PreviewKeyDown;
+                    }
 
-					//Testing for QuestionDriver
-					myQuestionDriver.Display();
-
-					//Disable Keys
-					this.PreviewKeyDown -= Window_PreviewKeyDown;
-
+                    else //Door is open. Move player to next room.
+                    {
+                        engine.OpenDoor(door);
+                        CenterPlayer();
+                    }					
 				}
             }
 
@@ -154,15 +158,20 @@ namespace CSharpMaze
 
 				else if (PlayerHitTarget())
 				{
-					//Eli's testing for MazeDriver
-					engine.CurrentDoor = "Door2";
-					//engine.Answered(true);
+                    string door = "Door2";
 
-					//Testing for QuestionDriver
-					myQuestionDriver.Display();
+                    if (engine.CurrentRoom.Door2State == 0) //Door is currently closed, display question and disable movement. 
+                    {
+                        engine.CurrentDoor = door;
+                        myQuestionDriver.Display();
+                        this.PreviewKeyDown -= Window_PreviewKeyDown;
+                    }
 
-					//Disable Keys
-					this.PreviewKeyDown -= Window_PreviewKeyDown;
+                    else //Door is open. Move player to next room.
+                    {
+                        engine.OpenDoor(door);
+                        CenterPlayer();
+                    }
 				}
             }
 
@@ -180,15 +189,20 @@ namespace CSharpMaze
 				}
 				else if (PlayerHitTarget() )
 				{
-					//Eli's testing for MazeDriver
-					engine.CurrentDoor = "Door1";
-					//engine.Answered(true);
+                    string door = "Door1";
 
-					//Testing for QuestionDriver
-					myQuestionDriver.Display();
+                    if (engine.CurrentRoom.Door1State == 0) //Door is currently closed, display question and disable movement. 
+                    {
+                        engine.CurrentDoor = door;
+                        myQuestionDriver.Display();
+                        this.PreviewKeyDown -= Window_PreviewKeyDown;
+                    }
 
-					//Disable Keys
-					this.PreviewKeyDown -= Window_PreviewKeyDown;
+                    else //Door is open. Move player to next room.
+                    {
+                        engine.OpenDoor(door);
+                        CenterPlayer();
+                    }
 				}
             }
 
@@ -206,22 +220,27 @@ namespace CSharpMaze
 
 				else if (PlayerHitTarget())
 				{
-					//Eli's testing for MazeDriver
-					engine.CurrentDoor = "Door3";
-					//engine.Answered(true);
+                    string door = "Door3";
+                                        
+                    if(engine.CurrentRoom.Door3State == 0) //Door is currently closed, display question and disable movement. 
+                    {
+                        engine.CurrentDoor = door;
+                        myQuestionDriver.Display();
+                        this.PreviewKeyDown -= Window_PreviewKeyDown;
+                    }
 
-					// Displays Question
-					myQuestionDriver.Display();
-
-					//Disable Keys
-					this.PreviewKeyDown -= Window_PreviewKeyDown;
+					else //Door is open. Move player to next room.
+                    {                        
+                        engine.OpenDoor(door);
+                        CenterPlayer();
+                    }
 				}
             }
 			//Used to gather the previous key pressed
 			prevKey = e.Key;
 		}
 		
-		//Center player to the middle of the room if user answers question correctly
+		//Center player to the middle of the room if user answers question correctly or goes through open door
 		private void CenterPlayer()
 		{
 			Canvas.SetLeft(this.Player, (this.PlayerRoom.Width - this.Player.Width) / 2);
@@ -306,15 +325,18 @@ namespace CSharpMaze
 		#region gather user information
 		private void BtnTF_OK_Click(object sender, RoutedEventArgs e)
         {
-			//Code for Testing
-			/*engine.Answered(true);
-			CenterPlayer();
-			ResetGrids();*/
+            //Code for Testing
+            //engine.Answered(true);
+			//CenterPlayer();
+			//ResetGrids();
+            bool correct;
+            
 			if (rdTFAns1.IsChecked == true)
 			{
-				engine.Answered(myQuestionDriver.IsCorrect(rdTFAns1.Content.ToString()));
+                correct = myQuestionDriver.IsCorrect(rdTFAns1.Content.ToString());
+                engine.Answered(correct);
 
-				if (myQuestionDriver.IsCorrect(rdTFAns2.Content.ToString()))
+				if (correct)
 					CenterPlayer();
 
 				ResetGrids();
@@ -322,9 +344,10 @@ namespace CSharpMaze
 
 			else if (rdTFAns2.IsChecked == true)
 			{
-				engine.Answered(myQuestionDriver.IsCorrect(rdTFAns2.Content.ToString()));
+                correct = myQuestionDriver.IsCorrect(rdTFAns2.Content.ToString());
+                engine.Answered(correct);
 
-				if (myQuestionDriver.IsCorrect(rdTFAns2.Content.ToString()))
+				if (correct)
 					CenterPlayer();
 
 				ResetGrids();
@@ -337,15 +360,18 @@ namespace CSharpMaze
 
 		private void BtnMC_OK_Click(object sender, RoutedEventArgs e)
 		{
-			//Code for Testing
-			/*engine.Answered(true);
-			CenterPlayer();
-			ResetGrids();*/
-			if (rdMCAns1.IsChecked == true)
+            //Code for Testing
+            //engine.Answered(true);
+			//CenterPlayer();
+			//ResetGrids();
+            
+            bool correct;
+            if (rdMCAns1.IsChecked == true)
 			{
-				engine.Answered(myQuestionDriver.IsCorrect(rdMCAns1.Content.ToString()));
+                correct = myQuestionDriver.IsCorrect(rdMCAns1.Content.ToString());
+                engine.Answered(correct);
 
-				if (myQuestionDriver.IsCorrect(rdMCAns1.Content.ToString()))
+				if (correct)
 					CenterPlayer();
 
 				ResetGrids();
@@ -354,9 +380,10 @@ namespace CSharpMaze
 
 			else if (rdMCAns2.IsChecked == true)
 			{
-				engine.Answered(myQuestionDriver.IsCorrect(rdMCAns2.Content.ToString()));
+                correct = myQuestionDriver.IsCorrect(rdMCAns2.Content.ToString());
+                engine.Answered(correct);
 
-				if (myQuestionDriver.IsCorrect(rdMCAns2.Content.ToString()))
+				if (correct)
 					CenterPlayer();
 
 				ResetGrids();
@@ -365,9 +392,10 @@ namespace CSharpMaze
 
 			else if (rdMCAns3.IsChecked == true)
 			{
-				engine.Answered(myQuestionDriver.IsCorrect(rdMCAns3.Content.ToString()));
+                correct = myQuestionDriver.IsCorrect(rdMCAns3.Content.ToString());
+                engine.Answered(correct);
 
-				if (myQuestionDriver.IsCorrect(rdMCAns3.Content.ToString()))
+				if (correct)
 					CenterPlayer();
 
 				ResetGrids();
@@ -375,9 +403,10 @@ namespace CSharpMaze
 
 			else if (rdMCAns4.IsChecked == true)
 			{
-				engine.Answered(myQuestionDriver.IsCorrect(rdMCAns4.Content.ToString()));
+                correct = myQuestionDriver.IsCorrect(rdMCAns4.Content.ToString());
+                engine.Answered(correct);
 
-				if (myQuestionDriver.IsCorrect(rdMCAns4.Content.ToString()))
+				if (correct)
 					CenterPlayer();
 
 				ResetGrids();
@@ -391,15 +420,18 @@ namespace CSharpMaze
 
         private void BtnSA_OK_Click(object sender, RoutedEventArgs e)
         {
-			//Code for Testing
-			/*engine.Answered(true);
-			CenterPlayer();
-			ResetGrids();*/
+            //Code for Testing
+           // engine.Answered(true);
+			//CenterPlayer();
+			//ResetGrids();
+            
+            bool correct;
 			if (txtSA.Text.Length != 0)
 			{
-				engine.Answered(myQuestionDriver.IsCorrect(txtSA.Text));
+                correct = myQuestionDriver.IsCorrect(txtSA.Text);
+                engine.Answered(correct);
 
-				if (myQuestionDriver.IsCorrect(txtSA.Text))
+				if (correct)
 					CenterPlayer();
 
 				ResetGrids();
