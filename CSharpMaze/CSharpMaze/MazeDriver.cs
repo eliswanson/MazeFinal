@@ -65,6 +65,8 @@ namespace CSharpMaze
             }
 
             CurrentRoom = rooms[0][0];
+
+			this.board.CurrentRoom(rooms[0][0]);
         }
 
         public void Answered(bool answer)

@@ -113,16 +113,16 @@
                     <RadioButton x:Name="rdMCAns2" GroupName="MC" Content="Ans2" Margin="155,24,0,24" HorizontalAlignment="Left" Width="109"/>
                     <RadioButton x:Name="rdMCAns3" GroupName="MC" Content="Ans3" Margin="14,47,180,1"/>
                     <RadioButton x:Name="rdMCAns4" GroupName="MC" Content="Ans4" Margin="156,45,38,3"/>
-                    <Button Margin="309,27,0,15" RenderTransformOrigin="1.787,1.952" x:Name="btnMC_OK" Content="OK" Click="btnMC_OK_Click" />
+                    <Button Margin="309,27,0,15" RenderTransformOrigin="1.787,1.952" x:Name="btnMC_OK" Content="OK" Click="BtnMC_OK_Click" />
                 </Grid>
             </GroupBox>
             <!--Groupbox True/False-->
-			<GroupBox x:Name="gbTFQues" Header="True/False Question" HorizontalAlignment="Left" Height="85" Margin="10,4,0,0" VerticalAlignment="Top" Width="408">
+			<GroupBox x:Name="gbTFQues" Header="True/False Question" HorizontalAlignment="Left" Height="85" Margin="10,4,0,0" VerticalAlignment="Top" Width="408" d:IsHidden="True">
 				<Grid x:Name="griTF">
 					<Label x:Name="lblTFQues" Content="Question:" Margin="0,0,34,30" />
 					<RadioButton x:Name="rdTFAns1" GroupName="TF" Content="Ans1" Margin="21,31,246,17"/>
 					<RadioButton x:Name="rdTFAns2" GroupName="TF" Content="Ans2" Margin="155,31,0,17" HorizontalAlignment="Left" Width="109"/>
-					<Button Margin="304,38,8,4" RenderTransformOrigin="1.787,1.952" x:Name="btnTF_OK" Content="OK" Click="btnTF_OK_Click" />
+					<Button Margin="304,38,8,4" RenderTransformOrigin="1.787,1.952" x:Name="btnTF_OK" Content="OK" Click="BtnTF_OK_Click" />
 				</Grid>
 			</GroupBox>
 			<!--Short Answer-->
@@ -130,7 +130,7 @@
                 <Grid x:Name="griSA" Margin="12,32,233,9">
                     <Label x:Name="lblSAQues" Content="Question:" Margin="0,-30,-226,25" />
                     <TextBox x:Name="txtSA" Margin="0,-5,-31,5" HorizontalAlignment="Right" Width="172"/>
-					<Button x:Name="btnSA_OK" Content="OK" HorizontalAlignment="Left" Margin="286,0,-209,-1" VerticalAlignment="Bottom" Width="86" Height="21" Click="btnSA_OK_Click"/>
+					<Button x:Name="btnSA_OK" Content="OK" HorizontalAlignment="Left" Margin="286,0,-209,-1" VerticalAlignment="Bottom" Width="86" Height="21" Click="BtnSA_OK_Click"/>
 				</Grid>
             </GroupBox>
         </Grid>
