@@ -78,6 +78,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Door.cs" />
+    <Compile Include="Graph.cs" />
     <Compile Include="MazeDriver.cs" />
     <Compile Include="MiniMapRoom.xaml.cs">
       <DependentUpon>MiniMapRoom.xaml</DependentUpon>

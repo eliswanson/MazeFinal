@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 using System.Windows;
 using System.Windows.Controls;
 
+//use int constants for doorstate? 0 closed, 1 open etc.
 namespace CSharpMaze
 {
     class MazeDriver
@@ -19,49 +17,90 @@ namespace CSharpMaze
 
         private Board board;
         private MiniMap map;
-
-        private RoomState currentRoom;
+        private Graph<Point> mazeGraph;
 
         public RoomState CurrentRoom
         {
-            get
-            {
-                return currentRoom;
-            }
-            private set
-            {
-                currentRoom = value;
-            }
+            get; private set;
         }
         public string CurrentDoor { get; set; }
 #endregion
         public MazeDriver(Grid griMiniMap, Canvas canBoard)
-        {
+        {         
             this.griMiniMap = griMiniMap;
             this.canBoard = canBoard;
 
-            rooms = new RoomState[5][];
-            location = new Point(0, 0);
+            this.rooms = new RoomState[5][];
+            this.mazeGraph = new Graph<Point>();
+            this.location = new Point(0, 0);
 
-            board = new Board(canBoard);
-            map = new MiniMap(griMiniMap);
+            this.board = new Board(canBoard);
+            this.map = new MiniMap(griMiniMap);
 
-            for (int i = 0; i < rooms.Length; i++)
+            for (int col = 0; col < rooms.Length; col++)
             {
-                rooms[i] = new RoomState[5];
+                rooms[col] = new RoomState[5];
 
-                for (int j = 0; j < rooms[i].Length; j++)
+                for (int row = 0; row < rooms[col].Length; row++)
                 {
-                    rooms[i][j] = new RoomState { Door1State = 0, Door2State = 0, Door3State = 0, Door4State = 0 };
+                    Point curPoint = new Point(row, col);
+                    int leftCol = 0;
+                    int rightCol = rooms[col].Length - 1;
+                    int topRow = 0;
+                    int botRow = rooms.Length - 1;
 
-                    if (i == 0)
-                        rooms[i][j].Door1State = 3;
-                    if (j == 0)
-                        rooms[i][j].Door2State = 3;
-                    if (i == rooms.Length - 1)
-                        rooms[i][j].Door3State = 3;
-                    if (j == rooms[i].Length - 1)
-                        rooms[i][j].Door4State = 3;
+                    RoomState curRoom = new RoomState
+                    {
+                        Door1 = RoomState.Closed,
+                        Door2 = RoomState.Closed,
+                        Door3 = RoomState.Closed,
+                        Door4 = RoomState.Closed
+                    };
+
+                    mazeGraph.AddVertex(curPoint);
+
+                    if (col == leftCol) //Sets doors to hidden for rooms that are on edge of map
+                    {
+                        curRoom.Door1 = RoomState.Hidden;
+                    }
+                    else 
+                    {
+                        Point above = new Point(row - 1, col);
+                            if (mazeGraph.Contains(above))
+                                mazeGraph.Connect(curPoint, above);
+                    }
+                    if (row == topRow)
+                    {
+                        curRoom.Door2 = RoomState.Hidden;
+                    }
+                    else
+                    {
+                        Point left = new Point(row - 1, col);
+                        if (mazeGraph.Contains(left))
+                            mazeGraph.Connect(curPoint, left);
+                    }
+                    if (col == rightCol)
+                    {
+                        curRoom.Door3 = RoomState.Hidden;
+                    }
+                    else
+                    {
+                        Point bot = new Point(row - 1, col);
+                        if (mazeGraph.Contains(bot))
+                            mazeGraph.Connect(curPoint, bot);
+                    }
+                    if (row == botRow)
+                    {
+                        curRoom.Door4 = RoomState.Hidden;
+                    }
+                    else
+                    {
+                        Point right = new Point(row - 1, col);
+                        if (mazeGraph.Contains(right))
+                            mazeGraph.Connect(curPoint, right);
+                    }
+
+                    rooms[col][row] = curRoom;
                 }
             }
 
@@ -86,7 +125,7 @@ namespace CSharpMaze
                 map.UpdateMap(rooms[(int)location.Y][(int)location.X], location); //update minimap and moves star
                 board.CurrentRoom(rooms[(int)location.Y][(int)location.X]);
 
-                UpdateCurrentRoom(location);
+                IsWinner(UpdateCurrentRoom(location));
             }
             else //lock door and run maze algorithm
             {
@@ -102,13 +141,23 @@ namespace CSharpMaze
                 map.UpdateMap((int)otherPoint.Y * 5 + (int)otherPoint.X, otherRoom); //update minimap for room on other side of the door
                 board.CurrentRoom(rooms[(int)location.Y][(int)location.X]);
 
-                if (!IsPath())
-                    MessageBox.Show("You lose!");
+                IsLoser();
             }
         }
-        public bool IsPath()
+        public bool IsLoser()
         {
+
             return true;
+        }
+
+        public bool IsWinner(RoomState room)
+        {
+            if (room.Equals(rooms[4][4]))
+            {
+                MessageBox.Show("Winner!");
+                return true;
+            }
+            return false;
         }
 
         public void OpenDoor(string door)
@@ -125,6 +174,7 @@ namespace CSharpMaze
         {
             return CurrentRoom = rooms[(int)newLocation.Y][(int)newLocation.X];
         }
+
         private RoomState UpdateRoom(int newState, Point point, string door)
         {
             if (newState < 0 || newState > 3)
@@ -135,16 +185,16 @@ namespace CSharpMaze
             switch (door)
             {
                 case ("Door1"):
-                    rooms[y][x].Door1State = newState;
+                    rooms[y][x].Door1 = newState;
                     return rooms[y][x];
                 case ("Door2"):
-                    rooms[y][x].Door2State = newState;
+                    rooms[y][x].Door2 = newState;
                     return rooms[y][x];
                 case ("Door3"):
-                    rooms[y][x].Door3State = newState;
+                    rooms[y][x].Door3 = newState;
                     return rooms[y][x];
                 case ("Door4"):
-                    rooms[y][x].Door4State = newState;
+                    rooms[y][x].Door4 = newState;
                     return rooms[y][x];
             }
 
@@ -158,16 +208,16 @@ namespace CSharpMaze
             switch (door)
             {
                 case ("Door1"):
-                    room.Door1State = newState;
+                    room.Door1 = newState;
                     return room;
                 case ("Door2"):
-                    room.Door2State = newState;
+                    room.Door2 = newState;
                     return room;
                 case ("Door3"):
-                    room.Door3State = newState;
+                    room.Door3 = newState;
                     return room;
                 case ("Door4"):
-                    room.Door4State = newState;
+                    room.Door4 = newState;
                     return room;
             }
 
@@ -209,7 +259,7 @@ namespace CSharpMaze
             }
 
             throw new Exception("Bad door");
-        }
+        }    
     }
 
 }

@@ -8,7 +8,7 @@
         mc:Ignorable="d"
 		Background="Black"
 		gif:ImageBehavior.AnimateInDesignMode="True"
-        Title="MainWindow" Height="400" Width="510" PreviewKeyDown="Window_PreviewKeyDown"  WindowStartupLocation="CenterScreen">
+        Title="MainWindow" Height="434.513" Width="510" PreviewKeyDown="Window_PreviewKeyDown"  WindowStartupLocation="CenterScreen">
 
 	<Window.InputBindings>
 		<KeyBinding Command="{x:Static local:Commands.Save}" Modifiers="Control" Key="S"/>
@@ -105,7 +105,7 @@
 			</Grid>
 		</Grid>
         <Grid Height="105" Margin="0,0,-0.667,0">
-            <Rectangle Fill="White" VerticalAlignment="Stretch" />
+            <Rectangle Fill="White" VerticalAlignment="Stretch" Margin="0,0,0,-32" />
             <GroupBox x:Name="gbMCQues" Header="Multiple Choice Question" HorizontalAlignment="Left" Height="85" Margin="10,4,0,0" VerticalAlignment="Top" Width="408">
                 <Grid x:Name="griMC" Margin="0,0,0,-12" d:IsHidden="True">
                     <Label x:Name="lblMCQues" Content="Question:" Margin="0,-3,10,34" />

@@ -45,41 +45,41 @@ namespace CSharpMaze
 			this.doorDisplay[2].HideAll();
 			this.doorDisplay[3].HideAll();
 
-			if (CurrentRoom.Door1State == 0)
+			if (CurrentRoom.Door1 == 0)
 				this.doorDisplay[0].Closed();
-			else if (CurrentRoom.Door1State == 1)
+			else if (CurrentRoom.Door1 == 1)
 				this.doorDisplay[0].Opened();
-			else if (CurrentRoom.Door1State == 2)
+			else if (CurrentRoom.Door1 == 2)
 			{
 				this.doorDisplay[0].Locked();
 				this.doorDisplay[0].Closed();
 			}
 
-			if (CurrentRoom.Door2State == 0)
+			if (CurrentRoom.Door2 == 0)
 				this.doorDisplay[1].Closed();
-			else if (CurrentRoom.Door2State == 1)
+			else if (CurrentRoom.Door2 == 1)
 				this.doorDisplay[1].Opened();
-			else if (CurrentRoom.Door2State == 2)
+			else if (CurrentRoom.Door2 == 2)
 			{
 				this.doorDisplay[1].Locked();
 				this.doorDisplay[1].Closed();
 			}
 
-			if (CurrentRoom.Door3State == 0)
+			if (CurrentRoom.Door3 == 0)
 				this.doorDisplay[2].Closed();
-			else if (CurrentRoom.Door3State == 1)
+			else if (CurrentRoom.Door3 == 1)
 				this.doorDisplay[2].Opened();
-			else if (CurrentRoom.Door3State == 2)
+			else if (CurrentRoom.Door3 == 2)
 			{
 				this.doorDisplay[2].Locked();
 				this.doorDisplay[2].Closed();
 			}
 
-			if (CurrentRoom.Door4State == 0)
+			if (CurrentRoom.Door4 == 0)
 				this.doorDisplay[3].Closed();
-			else if (CurrentRoom.Door4State == 1)
+			else if (CurrentRoom.Door4 == 1)
 				this.doorDisplay[3].Opened();
-			else if (CurrentRoom.Door4State == 2)
+			else if (CurrentRoom.Door4 == 2)
 			{
 				this.doorDisplay[3].Locked();
 				this.doorDisplay[3].Closed();
