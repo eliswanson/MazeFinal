@@ -1,0 +1,6 @@
+Entire folder is dedicated to handling of game mechanics. This includes the look and the inner workings on what goes on behind the scenes.
+
+PLEASE PLACE ALL CONTENT IN REQUIRED FOLDERS * UNLESS OKAYED BY TEAM THANK YOU! :)
+
+Classes - Describes what classes will be added to the game and methods added to each class.
+XAML - Front end code for XAML for front end development. 

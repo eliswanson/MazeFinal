@@ -1,0 +1,5 @@
+<!-- Folder for all variable NAMES and DESCRIPTION to why they were added along with what type of OBJECT they are *Please do not specify Grids being added only specify controls in this location! -->
+
+PlayerRoom - Player Frame that will show the player in the center of colored room with 4 brown doors (depending on  location of minimap) Object type: Canvas (Height 250)
+
+MiniMap - Players location in the maze. 5x5 colord squares along with a star (signifying end) and pictures signifying player. Object Type: Canvas(Height 180, margin(60,0,0,0)
