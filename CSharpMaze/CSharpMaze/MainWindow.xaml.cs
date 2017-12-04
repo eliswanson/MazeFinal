@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.IO;
 using WpfAnimatedGif;
 
 namespace CSharpMaze
@@ -11,38 +12,45 @@ namespace CSharpMaze
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
-
-   
-
-
-
     public partial class MainWindow : Window
 	{        
 		private Rect[] doorsHitBoxes;
 		private MazeDriver engine;
         private QuestionDriver myQuestionDriver;
-        public MainWindow()
+		private Executions executes = new Executions();
+		Originator origin = new Originator();
+		Caretaker care = new Caretaker();
+		private int SPEED = 3; // Speed at which player moves
+		int frames; // uses keys 
+		private Key prevKey;
+		public MainWindow()
 		{
 			RoomState testRoom = new RoomState() { Door1State = 3, Door2State = 3, Door3State = 2, Door4State=2 };
             
 			InitializeComponent();
             engine = new MazeDriver(this.MiniMap, this.PlayerRoom);
 
-			this.ResetGrids();
+			/****Remove Later ****/
+			gbTFQues.Visibility = System.Windows.Visibility.Hidden;
+			gbMCQues.Visibility = System.Windows.Visibility.Hidden;
+			gbSAQues.Visibility = System.Windows.Visibility.Hidden;
+			 /****End Remove Later ****/
 
 			myQuestionDriver = new QuestionDriver(gbMCQues, gbTFQues, gbSAQues);
-			GenerateHitBoxes();                  
+			GenerateHitBoxes();
+			PlayBackgroundMusic();
 
-        }
-        #region Execute
+		}
+        #region Execute Order 66
         void Save_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.CanExecute = true;
+			e.CanExecute = executes.ExecuteSave;
 		}
 
 		void Save_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			MessageBox.Show("Game Saved");
+			care.AddMemento(origin.CreateMemento(engine, myQuestionDriver));
+			care.SaveGame();
 		}
 
 		void Load_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -52,7 +60,9 @@ namespace CSharpMaze
 
 		void Load_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			MessageBox.Show("Game load");
+			care.LoadGame();
+			origin.RestoreFromMemento(care.GetLatestMemento(), engine, myQuestionDriver);
+			CenterPlayer();
 		}
 
 		void Exit_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -113,15 +123,12 @@ namespace CSharpMaze
 		}
 		#endregion
 
-		#region Move player around room
-		//Controls the speed of how fast player moves and holds what key was pressed last
-		private int SPEED = 3;
-		private Key prevKey = new Key();
+		#region Player Movement
 		private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
-			TriggerPlayerGif(1);
 			if (e.Key == Key.Right)
 			{
+				TriggerPlayerGif(1);
 				if (prevKey != Key.Right)
 				{
 					UpdatePlayersDirection(0);
@@ -153,6 +160,7 @@ namespace CSharpMaze
 
 			else if (e.Key == Key.Left)
 			{
+				TriggerPlayerGif(1);
 				if (prevKey != Key.Left)
 				{
 					UpdatePlayersDirection(180);
@@ -184,7 +192,7 @@ namespace CSharpMaze
 
 			else if (e.Key == Key.Up)
 			{
-
+				TriggerPlayerGif(1);
 				if (prevKey != Key.Up)
 				{
 					UpdatePlayersDirection(-90);
@@ -215,6 +223,7 @@ namespace CSharpMaze
 
 			else if (e.Key == Key.Down)
 			{
+				TriggerPlayerGif(1);
 				if (prevKey != Key.Down)
 				{
 					UpdatePlayersDirection(90);
@@ -283,8 +292,11 @@ namespace CSharpMaze
 			Rect playerdetect = new Rect(new System.Windows.Point((double)Player.GetValue(Canvas.LeftProperty), (double)Player.GetValue(Canvas.TopProperty)), new System.Windows.Size((double)Player.Width, (double)Player.Height - 5));
 			for (int i = 0; i < doorsHitBoxes.Length; i++)
 				if (this.PlayerHitBox().IntersectsWith(doorsHitBoxes[i]))
-					if(!DoorLockedOrShown(i))// If user has hit the door checks that current door to see if it is locked or shown. else false.
+					if (!DoorLockedOrShown(i))
+					{// If user has hit the door checks that current door to see if it is locked or shown. else false.
+						executes.ExecuteSave = false;
 						return true;
+					}
 			return false;
 		}
 
@@ -312,7 +324,7 @@ namespace CSharpMaze
 
 		#region player frame movement
 		//Turns off player movement
-		int frames;
+		
 		private void TriggerPlayerGif(int amount)
 		{
 			frames += amount;
@@ -456,6 +468,8 @@ namespace CSharpMaze
 			gbTFQues.Visibility = System.Windows.Visibility.Hidden;
 			gbMCQues.Visibility = System.Windows.Visibility.Hidden;
 			gbSAQues.Visibility = System.Windows.Visibility.Hidden;
+			//Turns saving back on
+			executes.ExecuteSave = true;
 
 			//Resets text in text-box
 			txtSA.Text = "";
@@ -469,6 +483,24 @@ namespace CSharpMaze
 			rdTFAns1.IsChecked = false;
 
 		}
-#endregion
+		#endregion
+		private static void PlayBackgroundMusic()
+		{
+			try
+			{
+				System.Media.SoundPlayer sndOpen = new System.Media.SoundPlayer("Is Anybody Home_.wav");
+				sndOpen.PlayLooping();
+			}
+			catch (FileNotFoundException e)
+			{
+				Console.WriteLine(e.Message);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.Message);
+			}
+
+			Console.WriteLine("Sound plays");
+		}
 	}
 }

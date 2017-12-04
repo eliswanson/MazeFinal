@@ -77,11 +77,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Caretaker.cs" />
     <Compile Include="Door.cs" />
+    <Compile Include="Executions.cs" />
     <Compile Include="MazeDriver.cs" />
+    <Compile Include="Memento.cs" />
     <Compile Include="MiniMapRoom.xaml.cs">
       <DependentUpon>MiniMapRoom.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Originator.cs" />
     <Compile Include="QuestionDriver.cs" />
     <Compile Include="QuestionsPackage\MultipleChoice.cs" />
     <Compile Include="QuestionsPackage\Ques_Ans.cs" />

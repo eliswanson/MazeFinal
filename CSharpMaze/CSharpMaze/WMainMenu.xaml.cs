@@ -19,10 +19,7 @@ namespace CSharpMaze
 
 
 
-        private void imgSaveGame_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {           
 
-        }
 
         private void ImgStartGame_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {

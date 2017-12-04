@@ -13,9 +13,10 @@ namespace CSharpMaze
         #region fields and properties
         private Grid griMiniMap;
         private Canvas canBoard;
-
-        private RoomState[][] rooms;
-        private Point location;
+		//Changs Made
+        public RoomState[][] rooms;
+        public Point location;
+		//End Changes
 
         private Board board;
         private MiniMap map;

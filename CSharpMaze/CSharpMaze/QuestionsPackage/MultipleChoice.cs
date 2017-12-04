@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -8,7 +9,8 @@ using System.Windows.Controls;
 
 namespace CSharpMaze.QuestionsPackage
 {
-    class MultipleChoice : Ques_Ans
+	[Serializable]
+    class MultipleChoice : Ques_Ans, ISerializable
     {
         private string strAns1;
         private string strAns2;
@@ -83,5 +85,21 @@ namespace CSharpMaze.QuestionsPackage
 
             return this.Final;
         }
-    }
+
+	    public void GetObjectData(SerializationInfo info, StreamingContext context)
+	    {
+		    info.AddValue("MCAnswer1", strAns1);
+		    info.AddValue("MCAnswer2", strAns2);
+		    info.AddValue("MCAnswer3", strAns3);
+		    info.AddValue("MCAnswer4", strAns4);
+	    }
+
+	    public MultipleChoice(SerializationInfo info, StreamingContext context)
+	    {
+		    strAns1 = (String)info.GetValue("MCAnswer1", typeof(String));
+		    strAns2 = (String)info.GetValue("MCAnswer2", typeof(String));
+		    strAns3 = (String)info.GetValue("MCAnswer3", typeof(String));
+		    strAns4 = (String)info.GetValue("MCAnswer4", typeof(String));
+	    }
+	}
 }

@@ -7,7 +7,8 @@ namespace CSharpMaze
 {
     class QuestionDriver
     {
-        private List<Ques_Ans> questions = new List<Ques_Ans>();
+	    //Changes Made
+		public List<Ques_Ans> questions = new List<Ques_Ans>();
         private GroupBox gbMC;
         private GroupBox gbTF;
         private GroupBox gbSA;
@@ -88,14 +89,16 @@ namespace CSharpMaze
 
             while (readers.Read())
             {
-                MultipleChoice mc = new MultipleChoice(gbMC);
-                mc.Ques = readers["Question"].ToString();
-                mc.Ans1 = readers["Ans1"].ToString();
-                mc.Ans2 = readers["Ans2"].ToString();
-                mc.Ans3 = readers["Ans3"].ToString();
-                mc.Ans4 = readers["Ans4"].ToString();
-                mc.Final = readers["AnsFinal"].ToString();
-                questions.Add(mc);
+				MultipleChoice mc = new MultipleChoice(gbMC)
+				{
+					Ques = readers["Question"].ToString(),
+					Ans1 = readers["Ans1"].ToString(),
+					Ans2 = readers["Ans2"].ToString(),
+					Ans3 = readers["Ans3"].ToString(),
+					Ans4 = readers["Ans4"].ToString(),
+					Final = readers["AnsFinal"].ToString()
+				};
+				questions.Add(mc);
             }
             readers.Close();
             // We are ready, now lets cleanup and close our connection:
@@ -126,12 +129,14 @@ namespace CSharpMaze
 
             while (readers.Read())
             {
-                TrueFalse tf = new TrueFalse(gbTF);
-                tf.Ques = readers["Question"].ToString();
-                tf.Ans1 = readers["Ans1"].ToString();
-                tf.Ans2 = readers["Ans2"].ToString();
-                tf.Final = readers["AnsFinal"].ToString();
-                questions.Add(tf);
+				TrueFalse tf = new TrueFalse(gbTF)
+				{
+					Ques = readers["Question"].ToString(),
+					Ans1 = readers["Ans1"].ToString(),
+					Ans2 = readers["Ans2"].ToString(),
+					Final = readers["AnsFinal"].ToString()
+				};
+				questions.Add(tf);
             }
             readers.Close();
             // We are ready, now lets cleanup and close our connection:
@@ -163,10 +168,12 @@ namespace CSharpMaze
 
             while (readers.Read())
             {
-                ShortAns sa = new ShortAns(gbSA);
-                sa.Ques = readers["Question"].ToString();
-                sa.Final = readers["AnsFinal"].ToString();
-                questions.Add(sa);
+				ShortAns sa = new ShortAns(gbSA)
+				{
+					Ques = readers["Question"].ToString(),
+					Final = readers["AnsFinal"].ToString()
+				};
+				questions.Add(sa);
             }
             readers.Close();
             // We are ready, now lets cleanup and close our connection:

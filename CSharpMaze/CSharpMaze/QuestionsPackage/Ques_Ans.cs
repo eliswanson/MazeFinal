@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace CSharpMaze.QuestionsPackage
 {
-    abstract class Ques_Ans
+	[Serializable]
+	abstract class Ques_Ans
     {
         protected string strQues;
         protected string strFinal;

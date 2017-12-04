@@ -104,7 +104,6 @@ C:\Users\truth\Desktop\TuansCurrentBranch\MazeFinal-PlayerSave\CSharpMaze\CSharp
 C:\Users\truth\Desktop\TuansCurrentBranch\MazeFinal-PlayerSave\CSharpMaze\CSharpMaze\bin\Debug\System.Data.SQLite.xml
 C:\Users\truth\Desktop\TuansCurrentBranch\MazeFinal-PlayerSave\CSharpMaze\CSharpMaze\bin\Debug\System.Data.SQLite.dll.config
 C:\Users\truth\Desktop\TuansCurrentBranch\MazeFinal-PlayerSave\CSharpMaze\CSharpMaze\bin\Debug\WpfAnimatedGif.xml
-C:\Users\truth\Desktop\TuansCurrentBranch\MazeFinal-PlayerSave\CSharpMaze\CSharpMaze\obj\Debug\CSharpMaze.csprojResolveAssemblyReference.cache
 C:\Users\truth\Desktop\TuansCurrentBranch\MazeFinal-PlayerSave\CSharpMaze\CSharpMaze\obj\Debug\WMainMenu.baml
 C:\Users\truth\Desktop\TuansCurrentBranch\MazeFinal-PlayerSave\CSharpMaze\CSharpMaze\obj\Debug\MainWindow.g.cs
 C:\Users\truth\Desktop\TuansCurrentBranch\MazeFinal-PlayerSave\CSharpMaze\CSharpMaze\obj\Debug\MiniMapRoom.g.cs
@@ -121,3 +120,4 @@ C:\Users\truth\Desktop\TuansCurrentBranch\MazeFinal-PlayerSave\CSharpMaze\CSharp
 C:\Users\truth\Desktop\TuansCurrentBranch\MazeFinal-PlayerSave\CSharpMaze\CSharpMaze\obj\Debug\CSharpMaze.csproj.CoreCompileInputs.cache
 C:\Users\truth\Desktop\TuansCurrentBranch\MazeFinal-PlayerSave\CSharpMaze\CSharpMaze\obj\Debug\CSharpMaze.exe
 C:\Users\truth\Desktop\TuansCurrentBranch\MazeFinal-PlayerSave\CSharpMaze\CSharpMaze\obj\Debug\CSharpMaze.pdb
+C:\Users\truth\Desktop\TuansCurrentBranch\MazeFinal-PlayerSave\CSharpMaze\CSharpMaze\obj\Debug\CSharpMaze.csprojResolveAssemblyReference.cache

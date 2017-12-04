@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 
 namespace CSharpMaze
 {
+	[Serializable]
 	class RoomState
 	{
 
