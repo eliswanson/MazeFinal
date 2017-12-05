@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.IO;
+using System.Threading;
 using WpfAnimatedGif;
 
 namespace CSharpMaze
@@ -18,11 +20,13 @@ namespace CSharpMaze
 		private MazeDriver engine;
         private QuestionDriver myQuestionDriver;
 		private Executions executes = new Executions();
-		Originator origin = new Originator();
-		Caretaker care = new Caretaker();
+		private Originator origin = new Originator();
+		private Caretaker care = new Caretaker();
 		private int SPEED = 3; // Speed at which player moves
-		int frames; // uses keys 
+		private int frames; // uses keys 
 		private Key prevKey;
+		//private Thread BackgroundMusic = new Thread(new ThreadStart())
+
 		public MainWindow()
 		{
 			RoomState testRoom = new RoomState() { Door1State = 3, Door2State = 3, Door3State = 2, Door4State=2 };
@@ -38,9 +42,8 @@ namespace CSharpMaze
 
 			myQuestionDriver = new QuestionDriver(gbMCQues, gbTFQues, gbSAQues);
 			GenerateHitBoxes();
-			PlayBackgroundMusic();
-
 		}
+
         #region Execute Order 66
         void Save_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
@@ -82,7 +85,9 @@ namespace CSharpMaze
 
 		void About_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			MessageBox.Show("Some text about the game");
+			MenuReference.Show();
+			MenuReference.GridMainMenu.Visibility = Visibility.Hidden;
+			MenuReference.GridHelp.Visibility = Visibility.Visible;
 		}
 
 		void How_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -126,132 +131,132 @@ namespace CSharpMaze
 		#region Player Movement
 		private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == Key.Right)
+			switch (e.Key)
 			{
-				TriggerPlayerGif(1);
-				if (prevKey != Key.Right)
-				{
-					UpdatePlayersDirection(0);
-				}
+				case Key.Right:
+					
+					TriggerPlayerGif(1);
+					if (prevKey != Key.Right)
+					{
+						UpdatePlayersDirection(0);
+					}
 
-				if (HitSideOfBoard("Right") && !PlayerHitTarget())
-				{
-					Canvas.SetLeft(this.Player, Canvas.GetLeft(this.Player) + SPEED);
-				}
+					if (HitSideOfBoard("Right") && !PlayerHitTarget())
+					{
+						Canvas.SetLeft(this.Player, Canvas.GetLeft(this.Player) + SPEED);
+					}
 
-				else if (PlayerHitTarget())
-				{
-                    string door = "Door4";
+					else if (PlayerHitTarget())
+					{
+						string door = "Door4";
 
-                    if (engine.CurrentRoom.Door4State == 0) //Door is currently closed, display question and disable movement. 
-                    {
-                        engine.CurrentDoor = door;
-                        myQuestionDriver.Display();
-                        this.PreviewKeyDown -= Window_PreviewKeyDown;
-                    }
+						if (engine.CurrentRoom.Door4State == 0) //Door is currently closed, display question and disable movement. 
+						{
+							engine.CurrentDoor = door;
+							myQuestionDriver.Display();
+							this.PreviewKeyDown -= Window_PreviewKeyDown;
+						}
 
-                    else //Door is open. Move player to next room.
-                    {
-                        engine.OpenDoor(door);
-                        CenterPlayer();
-                    }					
-				}
-            }
+						else //Door is open. Move player to next room.
+						{
+							engine.OpenDoor(door);
+							CenterPlayer();
+						}					
+					}
+					break;
+				case Key.Left:
+					
+					TriggerPlayerGif(1);
+					if (prevKey != Key.Left)
+					{
+						UpdatePlayersDirection(180);
+					}
 
-			else if (e.Key == Key.Left)
-			{
-				TriggerPlayerGif(1);
-				if (prevKey != Key.Left)
-				{
-					UpdatePlayersDirection(180);
-				}
+					if (HitSideOfBoard("Left") && !PlayerHitTarget())
+					{
+						Canvas.SetLeft(this.Player, Canvas.GetLeft(this.Player) - SPEED);
+					}
 
-				if (HitSideOfBoard("Left") && !PlayerHitTarget())
-				{
-					Canvas.SetLeft(this.Player, Canvas.GetLeft(this.Player) - SPEED);
-				}
+					else if (PlayerHitTarget())
+					{
+						string door = "Door2";
 
-				else if (PlayerHitTarget())
-				{
-                    string door = "Door2";
+						if (engine.CurrentRoom.Door2State == 0) //Door is currently closed, display question and disable movement. 
+						{
+							engine.CurrentDoor = door;
+							myQuestionDriver.Display();
+							this.PreviewKeyDown -= Window_PreviewKeyDown;
+						}
 
-                    if (engine.CurrentRoom.Door2State == 0) //Door is currently closed, display question and disable movement. 
-                    {
-                        engine.CurrentDoor = door;
-                        myQuestionDriver.Display();
-                        this.PreviewKeyDown -= Window_PreviewKeyDown;
-                    }
+						else //Door is open. Move player to next room.
+						{
+							engine.OpenDoor(door);
+							CenterPlayer();
+						}
+					}
+					break;
+				case Key.Up:
+					
+					TriggerPlayerGif(1);
+					if (prevKey != Key.Up)
+					{
+						UpdatePlayersDirection(-90);
+					}
 
-                    else //Door is open. Move player to next room.
-                    {
-                        engine.OpenDoor(door);
-                        CenterPlayer();
-                    }
-				}
-            }
+					if (HitSideOfBoard("Up") && !PlayerHitTarget())
+					{
+						Canvas.SetTop(this.Player, Canvas.GetTop(this.Player) - SPEED);
+					}
+					else if (PlayerHitTarget() )
+					{
+						string door = "Door1";
 
-			else if (e.Key == Key.Up)
-			{
-				TriggerPlayerGif(1);
-				if (prevKey != Key.Up)
-				{
-					UpdatePlayersDirection(-90);
-				}
+						if (engine.CurrentRoom.Door1State == 0) //Door is currently closed, display question and disable movement. 
+						{
+							engine.CurrentDoor = door;
+							myQuestionDriver.Display();
+							this.PreviewKeyDown -= Window_PreviewKeyDown;
+						}
 
-				if (HitSideOfBoard("Up") && !PlayerHitTarget())
-				{
-					Canvas.SetTop(this.Player, Canvas.GetTop(this.Player) - SPEED);
-				}
-				else if (PlayerHitTarget() )
-				{
-                    string door = "Door1";
+						else //Door is open. Move player to next room.
+						{
+							engine.OpenDoor(door);
+							CenterPlayer();
+						}
+					}
+					break;
+				case Key.Down:
 
-                    if (engine.CurrentRoom.Door1State == 0) //Door is currently closed, display question and disable movement. 
-                    {
-                        engine.CurrentDoor = door;
-                        myQuestionDriver.Display();
-                        this.PreviewKeyDown -= Window_PreviewKeyDown;
-                    }
+					TriggerPlayerGif(1);
+					if (prevKey != Key.Down)
+					{
+						UpdatePlayersDirection(90);
+					}
 
-                    else //Door is open. Move player to next room.
-                    {
-                        engine.OpenDoor(door);
-                        CenterPlayer();
-                    }
-				}
-            }
+					if (HitSideOfBoard("Bottom") && !PlayerHitTarget())
+					{
+						Canvas.SetTop(this.Player, Canvas.GetTop(this.Player) + SPEED);
+					}
 
-			else if (e.Key == Key.Down)
-			{
-				TriggerPlayerGif(1);
-				if (prevKey != Key.Down)
-				{
-					UpdatePlayersDirection(90);
-				}
-
-				if (HitSideOfBoard("Bottom") && !PlayerHitTarget())
-				{
-					Canvas.SetTop(this.Player, Canvas.GetTop(this.Player) + SPEED);
-				}
-
-				else if (PlayerHitTarget())
-				{
-                    string door = "Door3";
+					else if (PlayerHitTarget())
+					{
+						string door = "Door3";
                                         
-                    if(engine.CurrentRoom.Door3State == 0) //Door is currently closed, display question and disable movement. 
-                    {
-                        engine.CurrentDoor = door;
-                        myQuestionDriver.Display();
-                        this.PreviewKeyDown -= Window_PreviewKeyDown;
-                    }
+						if(engine.CurrentRoom.Door3State == 0) //Door is currently closed, display question and disable movement. 
+						{
+							engine.CurrentDoor = door;
+							myQuestionDriver.Display();
+							this.PreviewKeyDown -= Window_PreviewKeyDown;
+						}
 
-					else //Door is open. Move player to next room.
-                    {                        
-                        engine.OpenDoor(door);
-                        CenterPlayer();
-                    }
-				}
-            }
+						else //Door is open. Move player to next room.
+						{                        
+							engine.OpenDoor(door);
+							CenterPlayer();
+						}
+					}
+					break;
+			}
 			//Used to gather the previous key pressed
 			prevKey = e.Key;
 		}
@@ -483,24 +488,39 @@ namespace CSharpMaze
 			rdTFAns1.IsChecked = false;
 
 		}
+
+		/// <summary>
+		/// Gets and Sets the user difficulty from the main menu
+		/// </summary>
+		/// <returns>String has easy,medium, or hard</returns>
+		public string UserDifficulty { get; set; }
+
+		public WMainMenu MenuReference { get; set; }
 		#endregion
-		private static void PlayBackgroundMusic()
+
+		#region Sounds
+		/// <summary>
+		/// Allows for footstep sounds as user moves player
+		/// </summary>
+		/// <param name="run"></param>
+		private void PlayFootSteps(int run)
 		{
 			try
 			{
-				System.Media.SoundPlayer sndOpen = new System.Media.SoundPlayer("Is Anybody Home_.wav");
-				sndOpen.PlayLooping();
-			}
-			catch (FileNotFoundException e)
-			{
-				Console.WriteLine(e.Message);
+				var sndOpen = new System.Media.SoundPlayer("Footsteps.wav");
+
+				if (run == 1)	
+					sndOpen.Play();
+				
+				else
+					sndOpen.Stop();
 			}
 			catch (Exception e)
 			{
 				Console.WriteLine(e.Message);
+				Close();
 			}
-
-			Console.WriteLine("Sound plays");
 		}
+#endregion
 	}
 }

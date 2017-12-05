@@ -6,7 +6,8 @@
         mc:Ignorable="d"
         Height="379" Width="300" Background="Black"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+		 Closing="WMainMenu_OnClosing">
 
     <StackPanel VerticalAlignment="Stretch">
         <WrapPanel Height="340">
@@ -69,10 +70,12 @@
                 </Grid>
                 <Grid x:Name="GridSettings" Margin="65,55,10,20">
                     <TextBlock Text="Volume" Margin="0,0,120,210" Width="Auto"/>
-                    <Slider Margin="35,23,35,187"/>
+	                <MediaElement Visibility="Hidden" Name="BackGroundMusic" LoadedBehavior="Manual" MediaEnded="BackGroundMusic_OnMediaEnded"></MediaElement>
+					<Slider Name="SldVolume" Minimum="0" Maximum="1" Value=".5" ValueChanged="SldVolume_OnValueChanged" TickFrequency=".1" Margin="35,23,35,187"/>
+					
                     <TextBlock Text="Difficulty" Margin="0,62,120,148" Width="Auto"/>
                     <RadioButton  x:Name="rdEasy" Content="Easy" Margin="18,83,83,118" Height="Auto" Width="Auto"/>
-                    <RadioButton  x:Name="rdMedium" Content="Medium" Margin="18,103,97,100" RenderTransformOrigin="-3.157,0.091" Width="Auto"/>
+                    <RadioButton  x:Name="rdMedium" Content="Medium" Margin="18,103,97,100" RenderTransformOrigin="-3.157,0.091" Width="Auto" IsChecked="True"/>
                     <RadioButton  x:Name="rdHard" Content="Hard" Margin="18,124,0,79" HorizontalAlignment="Left" Width="64"/>
 
                     <Button x:Name="BtnSaveSettings" Content="Save Setting" Margin="0,176,100,27" Width="Auto" Click="BtnSaveSettings_Click"/>

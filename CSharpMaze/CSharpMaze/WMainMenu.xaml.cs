@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.ComponentModel;
+using System.IO;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace CSharpMaze
 {
@@ -7,36 +11,35 @@ namespace CSharpMaze
     /// </summary>
     public partial class WMainMenu : Window
     {
-        
-        public WMainMenu()
+	    private string difficultyLevel;
+	    MainWindow myMain = new MainWindow();
+		public WMainMenu()
         {            
             InitializeComponent();
             GridHelp.Visibility = System.Windows.Visibility.Hidden;
             GridLoadGame.Visibility = System.Windows.Visibility.Hidden;
             GridSettings.Visibility = System.Windows.Visibility.Hidden;
-        }
-
-
-
-
-
+			PlayBackgroundMusic(); // Runs background music
+		    difficultyLevel = rdMedium.Content.ToString();
+		}
 
         private void ImgStartGame_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            MainWindow myMain = new MainWindow();
-            this.Hide();
+	        myMain.UserDifficulty = difficultyLevel;
+	        myMain.MenuReference = this;
+			this.Hide();
             //myMain.Owner = this;
             myMain.ShowDialog();
-            this.Close();
-        }
+	        myMain.MenuReference = null;
+			this.Close();
+		}
 
         private void ImgLoadGame_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             GridLoadGame.Visibility = System.Windows.Visibility.Visible;
             GridMainMenu.Visibility = System.Windows.Visibility.Hidden;
             GridSettings.Visibility = System.Windows.Visibility.Hidden;
-            GridHelp.Visibility = System.Windows.Visibility.Hidden;
-            
+            GridHelp.Visibility = System.Windows.Visibility.Hidden; 
         }
 
         private void ImgExitGame_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -52,10 +55,9 @@ namespace CSharpMaze
             GridMainMenu.Visibility = System.Windows.Visibility.Hidden;
             GridSettings.Visibility = System.Windows.Visibility.Visible;
             GridHelp.Visibility = System.Windows.Visibility.Hidden;
-            
         }
 
-        private void ImgAboutGame_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void ImgAboutGame_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             GridLoadGame.Visibility = System.Windows.Visibility.Hidden;
             GridMainMenu.Visibility = System.Windows.Visibility.Hidden;
@@ -93,12 +95,74 @@ namespace CSharpMaze
         }
         private void BtnDefault_Click(object sender, RoutedEventArgs e)
         {
-            this.BackToMainMenu();
+	        BackGroundMusic.Volume = 0.5;
+	        SldVolume.Value = 0.5;
+	        rdMedium.IsChecked = true;
+	        difficultyLevel = rdMedium.Content.ToString();
+			this.BackToMainMenu();
         }
 
         private void BtnSaveSettings_Click(object sender, RoutedEventArgs e)
         {
-            this.BackToMainMenu();
+	        if (rdEasy.IsChecked == true)
+		        difficultyLevel = rdEasy.Content.ToString();
+			else if (rdHard.IsChecked == true)
+		        difficultyLevel = rdHard.Content.ToString();
+			this.BackToMainMenu();
         }
+
+		#region Background Music
+		/// <summary>
+		/// <para>PlayBackgroundMusic()</para>
+		/// </summary>
+		private void PlayBackgroundMusic()
+	    {
+		    try
+		    {
+				BackGroundMusic.Source = new Uri("Is Anybody Home_.mp3", UriKind.Relative);
+			    BackGroundMusic.Play();
+		    }
+		    catch (FileNotFoundException e)
+		    {
+			    Console.WriteLine(e.Message);
+			    Close();
+		    }
+		    catch (Exception e)
+		    {
+			    Console.WriteLine(e.Message);
+			    Close();
+		    }
+	    }
+		/// <summary>
+		/// Once music has ended loops music again
+		/// </summary>
+		/// <param name="sender"> object that is sending the information</param>
+		/// <param name="e">event information</param>
+	    private void BackGroundMusic_OnMediaEnded(object sender, RoutedEventArgs e)
+	    {
+			BackGroundMusic.Position = TimeSpan.Zero;
+		    BackGroundMusic.Play();
+		}
+	    #endregion
+
+	    private void SldVolume_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+	    {
+		    BackGroundMusic.Volume = (double)SldVolume.Value;
+	    }
+
+
+	    private void WMainMenu_OnClosing(object sender, CancelEventArgs e)
+	    {
+		    if (myMain.MenuReference != null)
+		    {
+			    e.Cancel = true;
+			    this.Hide();
+		    }
+		    else
+				myMain.Close();
+		    
+
+
+	    }
     }
 }
