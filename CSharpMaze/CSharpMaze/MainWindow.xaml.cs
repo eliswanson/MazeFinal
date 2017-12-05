@@ -98,7 +98,10 @@ namespace CSharpMaze
 
 		void How_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			MessageBox.Show("Some text describing how to play the game");
+			MenuReference.Show();
+			MenuReference.GridHelp.Visibility = Visibility.Visible;
+			MenuReference.GridMainMenu.Visibility = Visibility.Hidden;
+			MenuReference.HowToPlayGame();
 		}
 
 		void Game_CanExecute(object sender, CanExecuteRoutedEventArgs e)

@@ -68,7 +68,7 @@
                     <Button x:Name="BtnLoadGame"  Content="OK" Margin="3,126,112,77" Background="Gold" FontWeight="Bold" Grid.ColumnSpan="2"/>
                     <Button x:Name="BtnBack"  Content="Back" Margin="25,126,30,77" Background="Gold" FontWeight="Bold" Grid.Column="1" Click="BtnBackHelp_Click"/>
                 </Grid>
-                <Grid x:Name="GridSettings" Margin="65,55,10,20">
+                <Grid x:Name="GridSettings" Margin="65,55,10,20" d:IsHidden="True">
                     <TextBlock Text="Volume" Margin="0,0,120,210" Width="Auto"/>
 	                <MediaElement Visibility="Hidden" Name="BackGroundMusic" LoadedBehavior="Manual" MediaEnded="BackGroundMusic_OnMediaEnded"></MediaElement>
 					<Slider Name="SldVolume" Minimum="0" Maximum="1" Value=".5" ValueChanged="SldVolume_OnValueChanged" TickFrequency=".1" Margin="35,23,35,187"/>
@@ -82,9 +82,9 @@
                     <Button x:Name="BtnDefault" Content="Default" Margin="90,176,25,27" Click="BtnDefault_Click"/>
                 </Grid>
 
-                <Grid x:Name="GridHelp" d:IsHidden="True">
-                    <TextBlock x:Name="txbHowToPlay" Text="How to play" Margin="55,55,25,190" Width="Auto"/>
-                    <TextBlock x:Name="txbAbout" Text="About" Margin="55,150,25,35" FontWeight="Bold" Width="Auto"/>
+                <Grid x:Name="GridHelp">
+                    <TextBlock x:Name="txbHowToPlay" Text="How to play" Margin="55,55,25,37" Width="Auto" FontSize="9"/>
+                    <!--<TextBlock x:Name="txbAbout" Text="About" Margin="55,150,25,35" FontWeight="Bold" Width="Auto"/>-->
                     <Button x:Name="BtnBackHelp" Content="Back" Margin="99,268,76,10" Width="Auto" Click="BtnBackHelp_Click"/>
                 </Grid>
             </Grid>

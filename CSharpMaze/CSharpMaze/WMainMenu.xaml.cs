@@ -84,8 +84,21 @@ namespace CSharpMaze
                 "   Andrew Combs\n" +
                 "   Eli Swanson\n" +
                 "   Tuan Dang";
-            this.txbAbout.Text = strInfo;
+            txbHowToPlay.Text = strInfo;
         }
+
+	    public void HowToPlayGame()
+	    {
+		    string strInfo = "How to Play:" +
+		                     "\nUse the Arrow keys to Direct where player moves in the game. " +
+		                     "\nGo up to a door and answer the questions appropriately based on the question given." +
+		                     "\n\nQuestions given will either be one word Short Answer, True or False question, or Multiple Choice" +
+		                     "\nOnce question is answered you'll be placed accordingly to the new room." +
+		                     "\nIf Answer is incorrect a lock will be placed on room door and be locked from using" +
+		                     "\nIf Door is opened then you are able to move through freely" +
+		                     "\nContinue on until reaching the end of the minimap";
+		    txbHowToPlay.Text = strInfo;
+	    }
 
         //This method used to back to main menu
         private void BtnBackHelp_Click(object sender, RoutedEventArgs e)
