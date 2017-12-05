@@ -14,7 +14,7 @@ namespace CSharpMaze
 
         private readonly Board board;
         private readonly MiniMap miniMap;
-        public Graph<Point> MazeGraph { get; set; } //add if statements to some of these properties? if already set don't change (throw exception?)
+        public Graph<Point> MazeGraph { get; set; } = new Graph<Point>(); //add if statements to some of these properties? if already set don't change (throw exception?)
 
         public RoomState CurrentRoomState { get; private set; }
         public string CurrentDoorString { get; set; }
@@ -26,8 +26,7 @@ namespace CSharpMaze
         /// <param name="canBoard">Canvas for Board</param>
         public MazeDriver(Grid griMiniMap, Canvas canBoard)
         {
-            RoomStates = new RoomState[5][];
-            mazeGraph = new Graph<Point>();
+            RoomStates = new RoomState[5][];            
             PlayerPoint = new Point(0, 0);
 
             board = new Board(canBoard);
@@ -52,7 +51,7 @@ namespace CSharpMaze
                         Door4State = RoomState.Closed
                     };
 
-                    mazeGraph.AddVertex(roomPoint);
+                    MazeGraph.AddVertex(roomPoint);
 
                     if (col == leftCol) //Sets doors to hidden for RoomStates that are on edge of map
                     {
@@ -61,8 +60,8 @@ namespace CSharpMaze
                     else
                     {
                         Point top = new Point(row, col - 1);
-                        if (mazeGraph.Contains(top))
-                            mazeGraph.Connect(roomPoint, top);
+                        if (MazeGraph.Contains(top))
+                            MazeGraph.Connect(roomPoint, top);
                     }
                     if (row == topRow)
                     {
@@ -71,8 +70,8 @@ namespace CSharpMaze
                     else
                     {
                         Point left = new Point(row - 1, col);
-                        if (mazeGraph.Contains(left))
-                            mazeGraph.Connect(roomPoint, left);
+                        if (MazeGraph.Contains(left))
+                            MazeGraph.Connect(roomPoint, left);
                     }
                     if (col == rightCol)
                     {
@@ -81,8 +80,8 @@ namespace CSharpMaze
                     else
                     {
                         Point bot = new Point(row, col + 1);
-                        if (mazeGraph.Contains(bot))
-                            mazeGraph.Connect(roomPoint, bot);
+                        if (MazeGraph.Contains(bot))
+                            MazeGraph.Connect(roomPoint, bot);
                     }
                     if (row == botRow)
                     {
@@ -91,8 +90,8 @@ namespace CSharpMaze
                     else
                     {
                         Point right = new Point(row + 1, col);
-                        if (mazeGraph.Contains(right))
-                            mazeGraph.Connect(roomPoint, right);
+                        if (MazeGraph.Contains(right))
+                            MazeGraph.Connect(roomPoint, right);
                     }
 
                     RoomStates[col][row] = curRoom;
@@ -110,8 +109,8 @@ namespace CSharpMaze
         /// <param name="canBoard">Canvas for Board</param>
         /// <param name="roomStates">Deserialized RoomState[][]</param>
         /// <param name="playerPoint">Deserialized Point</param>
-        /// <param name="mazeGraph">Deserialized Graph</param>
-        public MazeDriver(Grid griMiniMap, Canvas canBoard, RoomState[][] roomStates, Point playerPoint, Graph<Point> mazeGraph)
+        /// <param name="MazeGraph">Deserialized Graph</param>
+        public MazeDriver(Grid griMiniMap, Canvas canBoard, RoomState[][] roomStates, Point playerPoint, Graph<Point> MazeGraph)
         {
             RoomStates = roomStates;
             CurrentRoomState = RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X];
@@ -122,7 +121,7 @@ namespace CSharpMaze
             board = new Board(canBoard);
             miniMap = new MiniMap(griMiniMap);
 
-            this.mazeGraph = mazeGraph;
+            this.MazeGraph = MazeGraph;
 
             miniMap.UpdateMap(CurrentRoomState, PlayerPoint);                        
             board.CurrentRoom(CurrentRoomState);
@@ -142,30 +141,30 @@ namespace CSharpMaze
                     //Point roomPoint = new Point(row, col);
 
                     /*//Can delete all this if graph is serialized
-                    mazeGraph.AddVertex(roomPoint);
+                    MazeGraph.AddVertex(roomPoint);
                     if (col != leftCol) 
                     {
                         Point top = new Point(row, col - 1);
-                        if (mazeGraph.Contains(top)) //If graph isn't serialized, add condition curRoomState.DoorState1 == 0 || 1
-                            mazeGraph.Connect(roomPoint, top);
+                        if (MazeGraph.Contains(top)) //If graph isn't serialized, add condition curRoomState.DoorState1 == 0 || 1
+                            MazeGraph.Connect(roomPoint, top);
                     }
                     if (row != topRow)
                     {
                         Point left = new Point(row - 1, col);
-                        if (mazeGraph.Contains(left))
-                            mazeGraph.Connect(roomPoint, left);
+                        if (MazeGraph.Contains(left))
+                            MazeGraph.Connect(roomPoint, left);
                     }
                     if (col != rightCol)
                     {
                         Point bot = new Point(row, col + 1);
-                        if (mazeGraph.Contains(bot))
-                            mazeGraph.Connect(roomPoint, bot);
+                        if (MazeGraph.Contains(bot))
+                            MazeGraph.Connect(roomPoint, bot);
                     }
                     if (row == botRow)
                     {
                         Point right = new Point(row + 1, col);
-                        if (mazeGraph.Contains(right))
-                            mazeGraph.Connect(roomPoint, right);
+                        if (MazeGraph.Contains(right))
+                            MazeGraph.Connect(roomPoint, right);
                     }*/
                 }                
             }
@@ -209,7 +208,7 @@ namespace CSharpMaze
                 miniMap.UpdateMap((int)otherPoint.Y * 5 + (int)otherPoint.X, otherRoom); //update minimap for room on other side of the door
                 board.CurrentRoom(RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X]);
 
-                mazeGraph.Disconnect(PlayerPoint, otherPoint);
+                MazeGraph.Disconnect(PlayerPoint, otherPoint);
 
                 if (IsLoser())
                     MessageBox.Show("You lose!");
@@ -217,7 +216,7 @@ namespace CSharpMaze
         }
         private bool IsLoser()
         {
-            return(!mazeGraph.BFS(PlayerPoint, endPoint));
+            return(!MazeGraph.BFS(PlayerPoint, endPoint));
         }
 
         private bool IsWinner()
