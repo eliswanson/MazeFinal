@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -11,150 +7,266 @@ namespace CSharpMaze
     class MazeDriver
     {
         #region fields and properties
-        private Grid griMiniMap;
-        private Canvas canBoard;
-		//Changs Made
-        public RoomState[][] rooms;
-        public Point location;
-		//End Changes
+        public RoomState[][] RoomStates { get; set; }         
 
-        private Board board;
-        private MiniMap map;
+        private readonly Point endPoint;
+        public Point PlayerPoint { get; set; }
 
-        private RoomState currentRoom;
+        private readonly Board board;
+        private readonly MiniMap miniMap;
+        private readonly Graph<Point> mazeGraph;
 
-        public RoomState CurrentRoom
-        {
-            get
-            {
-                return currentRoom;
-            }
-            private set
-            {
-                currentRoom = value;
-            }
-        }
-        public string CurrentDoor { get; set; }
-#endregion
+        public RoomState CurrentRoomState { get; private set; }
+        public string CurrentDoorString { get; set; }
+        #endregion
         public MazeDriver(Grid griMiniMap, Canvas canBoard)
         {
-            this.griMiniMap = griMiniMap;
-            this.canBoard = canBoard;
-
-            rooms = new RoomState[5][];
-            location = new Point(0, 0);
+            RoomStates = new RoomState[5][];
+            mazeGraph = new Graph<Point>();
+            PlayerPoint = new Point(0, 0);
 
             board = new Board(canBoard);
-            map = new MiniMap(griMiniMap);
+            miniMap = new MiniMap(griMiniMap);
 
-            for (int i = 0; i < rooms.Length; i++)
+            for (int col = 0; col < RoomStates.Length; col++)
             {
-                rooms[i] = new RoomState[5];
+                RoomStates[col] = new RoomState[5];
 
-                for (int j = 0; j < rooms[i].Length; j++)
-                {
-                    rooms[i][j] = new RoomState { Door1State = 0, Door2State = 0, Door3State = 0, Door4State = 0 };
+                for (int row = 0; row < RoomStates[col].Length; row++)
+                {                    
+                    int leftCol = 0;
+                    int rightCol = RoomStates[col].Length - 1;
+                    int topRow = 0;
+                    int botRow = RoomStates.Length - 1;
+                    Point roomPoint = new Point(row, col);
+                    RoomState curRoom = new RoomState
+                    {
+                        Door1State = RoomState.Closed,
+                        Door2State = RoomState.Closed,
+                        Door3State = RoomState.Closed,
+                        Door4State = RoomState.Closed
+                    };
 
-                    if (i == 0)
-                        rooms[i][j].Door1State = 3;
-                    if (j == 0)
-                        rooms[i][j].Door2State = 3;
-                    if (i == rooms.Length - 1)
-                        rooms[i][j].Door3State = 3;
-                    if (j == rooms[i].Length - 1)
-                        rooms[i][j].Door4State = 3;
+                    mazeGraph.AddVertex(roomPoint);
+
+                    if (col == leftCol) //Sets doors to hidden for RoomStates that are on edge of map
+                    {
+                        curRoom.Door1State = RoomState.Hidden;
+                    }
+                    else
+                    {
+                        Point top = new Point(row, col - 1);
+                        if (mazeGraph.Contains(top))
+                            mazeGraph.Connect(roomPoint, top);
+                    }
+                    if (row == topRow)
+                    {
+                        curRoom.Door2State = RoomState.Hidden;
+                    }
+                    else
+                    {
+                        Point left = new Point(row - 1, col);
+                        if (mazeGraph.Contains(left))
+                            mazeGraph.Connect(roomPoint, left);
+                    }
+                    if (col == rightCol)
+                    {
+                        curRoom.Door3State = RoomState.Hidden;
+                    }
+                    else
+                    {
+                        Point bot = new Point(row, col + 1);
+                        if (mazeGraph.Contains(bot))
+                            mazeGraph.Connect(roomPoint, bot);
+                    }
+                    if (row == botRow)
+                    {
+                        curRoom.Door4State = RoomState.Hidden;
+                    }
+                    else
+                    {
+                        Point right = new Point(row + 1, col);
+                        if (mazeGraph.Contains(right))
+                            mazeGraph.Connect(roomPoint, right);
+                    }
+
+                    RoomStates[col][row] = curRoom;
                 }
             }
 
-            CurrentRoom = rooms[0][0];
+            endPoint = new Point(4,4); //add class variable that defines number of cols and rows?
+            CurrentRoomState = RoomStates[0][0];
+            board.CurrentRoom(RoomStates[0][0]);
+        }
+        /// <summary>
+        /// Used for deserialization
+        /// </summary>
+        /// <param name="griMiniMap">Grid that MiniMap will use</param>
+        /// <param name="canBoard">Canvas that Board will use</param>
+        /// <param name="roomStates">RoomState[][] deserialized from file</param>
+        /// <param name="playerPoint">Point deserialized from file</param>
+        public MazeDriver(Grid griMiniMap, Canvas canBoard, RoomState[][] roomStates, Point playerPoint)
+        {
+            RoomStates = roomStates;
+            CurrentRoomState = RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X];
+            
+            PlayerPoint = playerPoint;
+            endPoint = new Point(4, 4);
 
-			this.board.CurrentRoom(rooms[0][0]);
+            board = new Board(canBoard);
+            miniMap = new MiniMap(griMiniMap);
+
+            mazeGraph = new Graph<Point>();
+
+            miniMap.UpdateMap(CurrentRoomState, PlayerPoint);                        
+            board.CurrentRoom(CurrentRoomState);
+
+            for (int col = 0; col < RoomStates.Length; col++)
+            {
+                for (int row = 0; row < RoomStates[col].Length; row++)
+                {
+                    int leftCol = 0;
+                    int rightCol = RoomStates[col].Length - 1;
+                    int topRow = 0;
+                    int botRow = RoomStates.Length - 1;
+                    Point roomPoint = new Point(row, col);
+                    RoomState curRoomState = RoomStates[col][row];
+                        
+                    mazeGraph.AddVertex(roomPoint);
+
+                    if (col != leftCol) //Sets doors to hidden for RoomStates that are on edge of map
+                    {
+                        Point top = new Point(row, col - 1);
+                        if (mazeGraph.Contains(top))
+                            mazeGraph.Connect(roomPoint, top);
+                    }
+                    if (row != topRow)
+                    {
+                        Point left = new Point(row - 1, col);
+                        if (mazeGraph.Contains(left))
+                            mazeGraph.Connect(roomPoint, left);
+                    }
+                    if (col != rightCol)
+                    {
+                        Point bot = new Point(row, col + 1);
+                        if (mazeGraph.Contains(bot))
+                            mazeGraph.Connect(roomPoint, bot);
+                    }
+                    if (row == botRow)
+                    {
+                        Point right = new Point(row + 1, col);
+                        if (mazeGraph.Contains(right))
+                            mazeGraph.Connect(roomPoint, right);
+                    }
+
+                    miniMap.UpdateMap(col * 5 + row, curRoomState);
+                }                
+            }
+
+           
         }
 
         #region Updating minimap and board
-        public void Answered(bool answer)
+        /// <summary>
+        /// Updates state of board, minimap and determine win or loss after player answers a question.
+        /// </summary>
+        /// <param name="answer"></param>
+        public void Answered(bool answer) //should return bool if win or loss? let mainwindow handle resetting.
         {
             if (answer) //open door and move player
             {
-                UpdateRoom(1, rooms[(int)location.Y][(int)location.X], CurrentDoor); //open door in the current room
-                map.UpdateMap((int)location.Y * 5 + (int)location.X, rooms[(int)location.Y][(int)location.X]); //update minimap  
+                UpdateRoom(1, RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X], CurrentDoorString); //open door in the current room
+                miniMap.UpdateMap((int)PlayerPoint.Y * 5 + (int)PlayerPoint.X, RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X]); //update minimap  
 
-                location = UpdateLocation(location, CurrentDoor); //change location of player                                              
+                PlayerPoint = UpdateLocation(PlayerPoint, CurrentDoorString); //change PlayerLocation of player                                              
 
-                CurrentDoor = OppositeDoor(CurrentDoor); //get door opposite of one the one opened      
+                CurrentDoorString = OppositeDoor(CurrentDoorString); //get door opposite of the one opened      
 
-                UpdateRoom(1, rooms[(int)location.Y][(int)location.X], CurrentDoor); //open door in room player moved to
-                map.UpdateMap(rooms[(int)location.Y][(int)location.X], location); //update minimap and moves star
-                board.CurrentRoom(rooms[(int)location.Y][(int)location.X]);
+                UpdateRoom(1, RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X], CurrentDoorString); //open door in room player moved to
+                miniMap.UpdateMap(RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X], PlayerPoint); //update minimap and moves star
+                board.CurrentRoom(RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X]); //update board
 
-                UpdateCurrentRoom(location);
+                UpdateCurrentRoom(PlayerPoint);
+                if (IsWinner()) //checks to see if winner
+                    MessageBox.Show("Winner!");
             }
             else //lock door and run maze algorithm
             {
                 RoomState otherRoom; //used for room on other side of door
                 Point otherPoint;
 
-                UpdateRoom(2, rooms[(int)location.Y][(int)location.X], CurrentDoor);
-                map.UpdateMap((int)location.Y * 5 + (int)location.X, rooms[(int)location.Y][(int)location.X]); //update current room
+                UpdateRoom(2, RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X], CurrentDoorString);
+                miniMap.UpdateMap((int)PlayerPoint.Y * 5 + (int)PlayerPoint.X, RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X]); //update current room
 
-                otherPoint = UpdateLocation(location, CurrentDoor); //get point for other door
-                otherRoom = UpdateRoom(2, rooms[(int)otherPoint.Y][(int)otherPoint.X], OppositeDoor(CurrentDoor)); //update room on other side of door    
+                otherPoint = UpdateLocation(PlayerPoint, CurrentDoorString); //get point for other door
+                otherRoom = UpdateRoom(2, RoomStates[(int)otherPoint.Y][(int)otherPoint.X], OppositeDoor(CurrentDoorString)); //update room on other side of door    
 
-                map.UpdateMap((int)otherPoint.Y * 5 + (int)otherPoint.X, otherRoom); //update minimap for room on other side of the door
-                board.CurrentRoom(rooms[(int)location.Y][(int)location.X]);
+                miniMap.UpdateMap((int)otherPoint.Y * 5 + (int)otherPoint.X, otherRoom); //update minimap for room on other side of the door
+                board.CurrentRoom(RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X]);
 
-                if (!IsPath())
+                mazeGraph.Disconnect(PlayerPoint, otherPoint);
+
+                if (IsLoser())
                     MessageBox.Show("You lose!");
             }
         }
-        public bool IsPath()
+        private bool IsLoser()
         {
-            return true;
+            return(!mazeGraph.BFS(PlayerPoint, endPoint));
         }
 
-        public void OpenDoor(string door)
+        private bool IsWinner()
         {
-            location = UpdateLocation(location, door); //change location of player 
-            map.UpdateMap(location);                    
-            board.CurrentRoom(UpdateCurrentRoom(location));
-            CurrentDoor = OppositeDoor(door);
+            return PlayerPoint.Equals(endPoint);
+        }
+        /// <summary>
+        /// Called if player goes through an open door. Moves player to next room and updates board, 
+        /// </summary>
+        /// <param name="door"></param>
+        public void OpenDoor(string door) //rename method?
+        {
+            PlayerPoint = UpdateLocation(PlayerPoint, door); //change PlayerLocation of player 
+            miniMap.UpdateMap(PlayerPoint);
+            board.CurrentRoom(UpdateCurrentRoom(PlayerPoint));
+            CurrentDoorString = OppositeDoor(door);
         }
         #endregion
 
         #region Helper methods for updating room and player location on minimap
         private RoomState UpdateCurrentRoom(Point newLocation) //Updates CurrentRoom and returns it
         {
-            return CurrentRoom = rooms[(int)newLocation.Y][(int)newLocation.X];
+            return CurrentRoomState = RoomStates[(int)newLocation.Y][(int)newLocation.X];
         }
-        private RoomState UpdateRoom(int newState, Point point, string door)
+
+        private RoomState UpdateRoom(int newState, Point point, string door) //never used, delete?
         {
             if (newState < 0 || newState > 3)
-                throw new Exception("newState is out of bounds");
+                throw new IndexOutOfRangeException("newState is out of bounds");
 
             int x = (int)point.X, y = (int)point.Y;
 
             switch (door)
             {
                 case ("Door1"):
-                    rooms[y][x].Door1State = newState;
-                    return rooms[y][x];
+                    RoomStates[y][x].Door1State = newState;
+                    return RoomStates[y][x];
                 case ("Door2"):
-                    rooms[y][x].Door2State = newState;
-                    return rooms[y][x];
+                    RoomStates[y][x].Door2State = newState;
+                    return RoomStates[y][x];
                 case ("Door3"):
-                    rooms[y][x].Door3State = newState;
-                    return rooms[y][x];
+                    RoomStates[y][x].Door3State = newState;
+                    return RoomStates[y][x];
                 case ("Door4"):
-                    rooms[y][x].Door4State = newState;
-                    return rooms[y][x];
+                    RoomStates[y][x].Door4State = newState;
+                    return RoomStates[y][x];
+                default:
+                    throw new ArgumentException("Bad door string passed"); //change
             }
-
-            throw new Exception("Bad door string passed");
         }
         private RoomState UpdateRoom(int newState, RoomState room, string door)
         {
             if (newState < 0 || newState > 3)
-                throw new Exception("newState is out of bounds");
+                throw new IndexOutOfRangeException("newState is out of bounds");
 
             switch (door)
             {
@@ -170,9 +282,9 @@ namespace CSharpMaze
                 case ("Door4"):
                     room.Door4State = newState;
                     return room;
+                default:
+                    throw new ArgumentException("Bad door string passed");
             }
-
-            throw new Exception("Bad door string passed");
         }
         private Point UpdateLocation(Point point, string door)
         {
@@ -186,11 +298,11 @@ namespace CSharpMaze
                     return new Point(point.X, point.Y + 1);
                 case ("Door4"):
                     return new Point(point.X + 1, point.Y);
-            }
-
-            throw new Exception("Bad door string passed");
+                default:
+                    throw new ArgumentException("Bad door string passed");
+            }            
         }
-#endregion
+        #endregion
 
         public string OppositeDoor(string door)
         {
@@ -207,9 +319,9 @@ namespace CSharpMaze
 
                 case ("Door4"):
                     return "Door2";
+                default:
+                    throw new ArgumentException("Bad door string passed");
             }
-
-            throw new Exception("Bad door");
         }
     }
 

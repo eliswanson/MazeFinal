@@ -143,9 +143,9 @@ namespace CSharpMaze
 				{
                     string door = "Door4";
 
-                    if (engine.CurrentRoom.Door4State == 0) //Door is currently closed, display question and disable movement. 
+                    if (engine.CurrentRoomState.Door4State == 0) //Door is currently closed, display question and disable movement. 
                     {
-                        engine.CurrentDoor = door;
+                        engine.CurrentDoorString = door;
                         myQuestionDriver.Display();
                         this.PreviewKeyDown -= Window_PreviewKeyDown;
                     }
@@ -175,9 +175,9 @@ namespace CSharpMaze
 				{
                     string door = "Door2";
 
-                    if (engine.CurrentRoom.Door2State == 0) //Door is currently closed, display question and disable movement. 
+                    if (engine.CurrentRoomState.Door2State == 0) //Door is currently closed, display question and disable movement. 
                     {
-                        engine.CurrentDoor = door;
+                        engine.CurrentDoorString = door;
                         myQuestionDriver.Display();
                         this.PreviewKeyDown -= Window_PreviewKeyDown;
                     }
@@ -206,9 +206,9 @@ namespace CSharpMaze
 				{
                     string door = "Door1";
 
-                    if (engine.CurrentRoom.Door1State == 0) //Door is currently closed, display question and disable movement. 
+                    if (engine.CurrentRoomState.Door1State == 0) //Door is currently closed, display question and disable movement. 
                     {
-                        engine.CurrentDoor = door;
+                        engine.CurrentDoorString = door;
                         myQuestionDriver.Display();
                         this.PreviewKeyDown -= Window_PreviewKeyDown;
                     }
@@ -238,9 +238,9 @@ namespace CSharpMaze
 				{
                     string door = "Door3";
                                         
-                    if(engine.CurrentRoom.Door3State == 0) //Door is currently closed, display question and disable movement. 
+                    if(engine.CurrentRoomState.Door3State == 0) //Door is currently closed, display question and disable movement. 
                     {
-                        engine.CurrentDoor = door;
+                        engine.CurrentDoorString = door;
                         myQuestionDriver.Display();
                         this.PreviewKeyDown -= Window_PreviewKeyDown;
                     }
@@ -306,16 +306,16 @@ namespace CSharpMaze
 				switch (door)
 				{
 					case 0:
-						return engine.CurrentRoom.Door1State == 2 || engine.CurrentRoom.Door1State == 3;		
+						return engine.CurrentRoomState.Door1State == 2 || engine.CurrentRoomState.Door1State == 3;		
 				
 					case 1:
-						return engine.CurrentRoom.Door2State == 2 || engine.CurrentRoom.Door2State == 3;
+						return engine.CurrentRoomState.Door2State == 2 || engine.CurrentRoomState.Door2State == 3;
 				
 					case 2:
-						return engine.CurrentRoom.Door3State == 2 || engine.CurrentRoom.Door3State == 3;
+						return engine.CurrentRoomState.Door3State == 2 || engine.CurrentRoomState.Door3State == 3;
 						
 					case 3:
-						return engine.CurrentRoom.Door4State == 2 || engine.CurrentRoom.Door4State == 3;	
+						return engine.CurrentRoomState.Door4State == 2 || engine.CurrentRoomState.Door4State == 3;	
 				}
 			
 			return false;

@@ -80,6 +80,7 @@
     <Compile Include="Caretaker.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="Executions.cs" />
+    <Compile Include="Graph.cs" />
     <Compile Include="MazeDriver.cs" />
     <Compile Include="Memento.cs" />
     <Compile Include="MiniMapRoom.xaml.cs">
