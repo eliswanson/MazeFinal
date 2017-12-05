@@ -88,6 +88,7 @@ namespace CSharpMaze
 			MenuReference.Show();
 			MenuReference.GridMainMenu.Visibility = Visibility.Hidden;
 			MenuReference.GridHelp.Visibility = Visibility.Visible;
+			MenuReference.AboutGame();
 		}
 
 		void How_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -108,6 +109,18 @@ namespace CSharpMaze
 		void Game_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
 			MessageBox.Show("New Game!");
+		}
+
+		void Settings_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = true;
+		}
+
+		void Settings_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			MenuReference.GridMainMenu.Visibility = Visibility.Hidden;
+			MenuReference.GridSettings.Visibility = Visibility.Visible;
+			MenuReference.Show();
 		}
 #endregion
 

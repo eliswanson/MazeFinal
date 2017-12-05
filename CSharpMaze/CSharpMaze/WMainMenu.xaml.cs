@@ -20,18 +20,25 @@ namespace CSharpMaze
             GridLoadGame.Visibility = System.Windows.Visibility.Hidden;
             GridSettings.Visibility = System.Windows.Visibility.Hidden;
 			PlayBackgroundMusic(); // Runs background music
-		    difficultyLevel = rdMedium.Content.ToString();
+		    difficultyLevel = rdMedium.Content.ToString(); // Ensures that we recieve the medium difficult setting
 		}
 
         private void ImgStartGame_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
 	        myMain.UserDifficulty = difficultyLevel;
 	        myMain.MenuReference = this;
-			this.Hide();
-            //myMain.Owner = this;
-            myMain.ShowDialog();
+			Hide();
+	        TurnRadioOff();
+			myMain.ShowDialog();
 	        myMain.MenuReference = null;
-			this.Close();
+			Close();
+		}
+
+	    private void TurnRadioOff()
+	    {
+			rdHard.IsEnabled = false;
+		    rdEasy.IsEnabled = false;
+		    rdMedium.IsEnabled = false;
 		}
 
         private void ImgLoadGame_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -55,7 +62,7 @@ namespace CSharpMaze
             GridMainMenu.Visibility = System.Windows.Visibility.Hidden;
             GridSettings.Visibility = System.Windows.Visibility.Visible;
             GridHelp.Visibility = System.Windows.Visibility.Hidden;
-        }
+		}
 
 		private void ImgAboutGame_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -66,7 +73,7 @@ namespace CSharpMaze
             AboutGame();
         }
 
-        private void AboutGame()
+        public void AboutGame()
         {
             string strInfo = "";
             strInfo += "The Maze Game\n";
@@ -83,7 +90,13 @@ namespace CSharpMaze
         //This method used to back to main menu
         private void BtnBackHelp_Click(object sender, RoutedEventArgs e)
         {
-            this.BackToMainMenu();
+	        if (myMain.MenuReference == null)
+		        this.BackToMainMenu();
+	        else
+	        {
+		        Hide();
+				BackToMainMenu();
+	        }
         }
 
         private void BackToMainMenu()
@@ -95,25 +108,44 @@ namespace CSharpMaze
         }
         private void BtnDefault_Click(object sender, RoutedEventArgs e)
         {
-	        BackGroundMusic.Volume = 0.5;
-	        SldVolume.Value = 0.5;
-	        rdMedium.IsChecked = true;
-	        difficultyLevel = rdMedium.Content.ToString();
-			this.BackToMainMenu();
+	        if (myMain.MenuReference == null)
+	        {
+		        BackGroundMusic.Volume = 0.5;
+		        SldVolume.Value = 0.5;
+		        rdMedium.IsChecked = true;
+		        difficultyLevel = rdMedium.Content.ToString();
+		        this.BackToMainMenu();
+	        }
+
+	        else
+	        {
+				BackGroundMusic.Volume = 0.5;
+		        SldVolume.Value = 0.5;
+		        Hide();
+				BackToMainMenu();
+			}
         }
 
-        private void BtnSaveSettings_Click(object sender, RoutedEventArgs e)
-        {
-	        if (rdEasy.IsChecked == true)
-		        difficultyLevel = rdEasy.Content.ToString();
-			else if (rdHard.IsChecked == true)
-		        difficultyLevel = rdHard.Content.ToString();
-			this.BackToMainMenu();
-        }
+	    private void BtnSaveSettings_Click(object sender, RoutedEventArgs e)
+	    {
+		    if (myMain.MenuReference == null)
+		    {
+				if (rdEasy.IsChecked == true)
+					difficultyLevel = rdEasy.Content.ToString();
+				else if (rdHard.IsChecked == true)
+					difficultyLevel = rdHard.Content.ToString();
+				this.BackToMainMenu();
+			}
+		    else
+		    {
+			    Hide();
+				BackToMainMenu();
+		    }
+    }
 
 		#region Background Music
 		/// <summary>
-		/// <para>PlayBackgroundMusic()</para>
+		/// Plays the background music for the game
 		/// </summary>
 		private void PlayBackgroundMusic()
 	    {
@@ -150,19 +182,21 @@ namespace CSharpMaze
 		    BackGroundMusic.Volume = (double)SldVolume.Value;
 	    }
 
-
+		/// <summary>
+		/// Closing event for application. Checks if the other window is open and closes it if it is closed
+		/// </summary>
+		/// <param name="sender">Object that is triggering the event</param>
+		/// <param name="e">Event to stop the closing of the application</param>
 	    private void WMainMenu_OnClosing(object sender, CancelEventArgs e)
 	    {
 		    if (myMain.MenuReference != null)
 		    {
 			    e.Cancel = true;
-			    this.Hide();
+			    Hide();
+				BackToMainMenu();
 		    }
 		    else
 				myMain.Close();
-		    
-
-
 	    }
     }
 }

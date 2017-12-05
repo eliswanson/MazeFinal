@@ -41,7 +41,8 @@
         <KeyBinding Command="{x:Static local:Commands.Exit}" Modifiers="Control" Key="X"/>
         <KeyBinding Command="{x:Static local:Commands.About}" Modifiers="Control" Key="A"/>
         <KeyBinding Command="{x:Static local:Commands.How}" Modifiers="Control" Key="H"/>
-    </Window.InputBindings>
+		<KeyBinding Command="{x:Static local:Commands.Settings}" Modifiers="Control" Key="T"/>
+	</Window.InputBindings>
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static local:Commands.Save}" CanExecute="Save_CanExecute" Executed="Save_Executed"/>
         <CommandBinding Command="{x:Static local:Commands.Game}" CanExecute="Game_CanExecute" Executed="Game_Executed"/>
@@ -49,7 +50,8 @@
         <CommandBinding Command="{x:Static local:Commands.How}" CanExecute="How_CanExecute" Executed="How_Executed"/>
         <CommandBinding Command="{x:Static local:Commands.Exit}" CanExecute="Exit_CanExecute" Executed="Exit_Executed"/>
         <CommandBinding Command="{x:Static local:Commands.About}" CanExecute="About_CanExecute" Executed="About_Executed"/>
-    </Window.CommandBindings>
+		<CommandBinding Command="{x:Static local:Commands.Settings}" CanExecute="Settings_CanExecute" Executed="Settings_Executed"/>
+	</Window.CommandBindings>
     <StackPanel VerticalAlignment="Stretch" Margin="0,0,0,14">
         <Menu>
             <MenuItem Header="_File" Width="30">
@@ -59,6 +61,7 @@
                 <MenuItem Header="_Exit" Name="mitmFile_Exit" InputGestureText="Ctrl+X" Command="{x:Static local:Commands.Exit}"/>
             </MenuItem>
             <MenuItem Header="_Help" Width="35">
+	            <MenuItem Header="_Settings" Name="mitmFile_Settings" InputGestureText="Ctrl+T" Command="{x:Static local:Commands.Settings}"/>
                 <MenuItem Header="_About" Name="mitmFile_About" InputGestureText="Ctrl+A" Command="{x:Static local:Commands.About}"/>
                 <MenuItem Header="_Game Play Instructions" Name="mitmFile_Instructions" InputGestureText="Ctrl+G" Command="{x:Static local:Commands.How}"/>
             </MenuItem>
@@ -186,12 +189,8 @@
                         <TextBlock x:Name="txbTFQues"  Margin="0,13,97,56" Width="Auto">Question</TextBlock>
                         <RadioButton x:Name="rdTFAns1" GroupName="TF" Content="Ans1" Margin="50,56,276,26"/>
                         <RadioButton x:Name="rdTFAns2" GroupName="TF" Content="Ans2" Margin="155,56,0,26" HorizontalAlignment="Left" Width="109"/>
-                        <Button Margin="280,48,56,26" RenderTransformOrigin="1.787,1.952" x:Name="btnTF_OK" Content="OK" Click="BtnTF_OK_Click" Height="Auto" Width="Auto"/>
-
-
-
-
-                    </Grid>
+						<Button Margin="280,48,56,26" RenderTransformOrigin="1.787,1.952" x:Name="btnTF_OK" Content="OK" Click="BtnTF_OK_Click" Height="Auto" Width="Auto"/>
+					</Grid>
                 </GroupBox>
                 <!--Short Answer-->
                 <GroupBox x:Name="gbSAQues" HorizontalAlignment="Left" Margin="10,10,0,0" Width="420" Height="123" VerticalAlignment="Top" d:IsHidden="True">

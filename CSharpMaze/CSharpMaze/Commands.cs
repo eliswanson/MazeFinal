@@ -15,5 +15,6 @@ namespace CSharpMaze
 		public static readonly RoutedCommand About = new RoutedCommand();
 		public static readonly RoutedCommand How = new RoutedCommand();
 		public static readonly RoutedCommand Game = new RoutedCommand();
+		public static readonly RoutedCommand Settings = new RoutedCommand();
 	}
 }
