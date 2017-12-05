@@ -9,11 +9,12 @@ namespace CSharpMaze
 	class Memento
 	{
 		// The state of all rooms to be fed to MazeDriver
-		private RoomState[][] rooms;
+		private RoomState[][] roomStates;
 		// The list of questions
-		private List<QuestionsPackage.Ques_Ans> questions;
+		private List<QuestionsPackage.Ques_Ans> questionsList;
 		// The point location of player
-		private Point PlayerLocation;
+		private Point playerLocation;
+	    private Graph<Point> mazeGraph;
 
 		///<summary>
 		///<para>Creates a new Memento for a game save state Memento(MazeDriver engine, QuestionDriver questions)</para>
@@ -21,18 +22,19 @@ namespace CSharpMaze
 		///</summary>
 		public Memento(MazeDriver engine, QuestionDriver questions)
 		{
-			this.rooms = engine.RoomStates;
-			this.questions = questions.questions;
-			this.PlayerLocation = engine.PlayerPoint;
-		}
+			this.roomStates = engine.RoomStates;			
+			this.playerLocation = engine.PlayerPoint;
+		    this.mazeGraph = engine.MazeGraph;
+		    this.questionsList = questions.QuestionsList;
+        }
 
 		public Memento(SerializationInfo info, StreamingContext context)
 		{
 			try
 			{
-				rooms = (RoomState[][])info.GetValue("rooms", typeof(object));
-				questions = (List<QuestionsPackage.Ques_Ans>)info.GetValue("questions",typeof(object));
-				PlayerLocation = (Point)info.GetValue("PlayerLocation", typeof(Point));
+				roomStates = (RoomState[][])info.GetValue("rooms", typeof(object));
+				questionsList = (List<QuestionsPackage.Ques_Ans>)info.GetValue("questions",typeof(object));
+				playerLocation = (Point)info.GetValue("PlayerLocation", typeof(Point));
 
 			}
 			catch (SerializationException e)
@@ -52,23 +54,28 @@ namespace CSharpMaze
 		///</summary>
 		public RoomState[][] ReturnRooms()
 		{
-			return rooms;
-		}
-		///<summary>
-		///<para>ReturnQuestions()</para>
-		///<para>Returns a Qyes_Ans list</para>
-		///</summary>
-		public List<QuestionsPackage.Ques_Ans> ReturnQuestions()
-		{
-			return questions;
-		}
+			return roomStates;
+		}		
 		///<summary>
 		///<para>ReturnPlayerLocation()</para>
 		///<para>Returns a Point representing the players location on the minimap</para>
 		///</summary>
 		public Point ReturnPlayerLocation()
 		{
-			return PlayerLocation;
+			return playerLocation;
 		}
-	}
+
+	    public Graph<Point> ReturnGraph()
+	    {
+	        return mazeGraph;
+	    }
+	    ///<summary>
+	    ///<para>ReturnQuestions()</para>
+	    ///<para>Returns a Qyes_Ans list</para>
+	    ///</summary>
+	    public List<QuestionsPackage.Ques_Ans> ReturnQuestions()
+	    {
+	        return questionsList;
+	    }
+    }
 }

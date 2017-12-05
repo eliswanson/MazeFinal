@@ -7,13 +7,14 @@ namespace CSharpMaze
 {
     class QuestionDriver
     {
-	    //Changes Made
-		public List<Ques_Ans> questions = new List<Ques_Ans>();
+        #region Properties and fields              
+        public List<Ques_Ans> QuestionsList { get; set; } // add if statement? if list not null, don't set?
         private GroupBox gbMC;
         private GroupBox gbTF;
         private GroupBox gbSA;
         private Ques_Ans currentQuestion;
-
+        #endregion
+        #region Constructors
         public QuestionDriver(GroupBox gbMC, GroupBox gbTF, GroupBox gbSA)
         {
             //Query database
@@ -28,7 +29,6 @@ namespace CSharpMaze
             QueryFromSATable();
             //Display();
         }
-
         public QuestionDriver(GroupBox gbMC, GroupBox gbTF, GroupBox gbSA, List<Ques_Ans> ques)
         {
             //Query database
@@ -38,8 +38,8 @@ namespace CSharpMaze
             this.gbMC = gbMC;
             this.gbTF = gbTF;
             this.gbSA = gbSA;
-            questions = ques;
-            foreach (Ques_Ans q in questions)
+            QuestionsList = ques;
+            foreach (Ques_Ans q in QuestionsList)
             {
                 if (q is MultipleChoice)
                     q.MyBox = gbMC;
@@ -50,41 +50,8 @@ namespace CSharpMaze
             }
             //Display();
         }
-
-        public void Display()
-        {
-            System.Random myRandom = new System.Random();
-            int size = questions.Count;
-            if (size > 0)
-            {
-                int indexRandom = myRandom.Next(size);
-                //Check if the type of Question is MC, TrueFalse, or ShortAnswer
-                if (questions[indexRandom].GetType() == typeof(MultipleChoice))
-                {
-                    gbMC.Visibility = System.Windows.Visibility.Visible;
-                    gbSA.Visibility = System.Windows.Visibility.Hidden;
-                    gbTF.Visibility = System.Windows.Visibility.Hidden;
-                }
-                else if (questions[indexRandom].GetType() == typeof(TrueFalse))
-                {
-                    gbMC.Visibility = System.Windows.Visibility.Hidden;
-                    gbSA.Visibility = System.Windows.Visibility.Hidden;
-                    gbTF.Visibility = System.Windows.Visibility.Visible;
-                }
-                else
-                {
-                    gbMC.Visibility = System.Windows.Visibility.Hidden;
-                    gbSA.Visibility = System.Windows.Visibility.Visible;
-                    gbTF.Visibility = System.Windows.Visibility.Hidden;
-                }
-
-                currentQuestion = questions[indexRandom];
-                questions[indexRandom].Display();
-                //After displaying Question, removing it from the list questions
-                questions.RemoveAt(indexRandom); //store question              
-            }
-        }
-
+        #endregion
+        #region Queries and Ques_Ans creation
         private void QueryFromMCTable()
         {
             //List<MultipleChoice> myMCList = new List<MultipleChoice>();
@@ -120,14 +87,13 @@ namespace CSharpMaze
 					Ans4 = readers["Ans4"].ToString(),
 					Final = readers["AnsFinal"].ToString()
 				};
-				questions.Add(mc);
+				QuestionsList.Add(mc);
             }
             readers.Close();
             // We are ready, now lets cleanup and close our connection:
             sqlite_conn.Close();
             //return myMCList;
         }
-
         private void QueryFromTFTable()
         {
             // We use these three SQLite objects:
@@ -158,15 +124,12 @@ namespace CSharpMaze
 					Ans2 = readers["Ans2"].ToString(),
 					Final = readers["AnsFinal"].ToString()
 				};
-				questions.Add(tf);
+				QuestionsList.Add(tf);
             }
             readers.Close();
             // We are ready, now lets cleanup and close our connection:
             sqlite_conn.Close();
         }
-
-
-
         private void QueryFromSATable()
         {
             // We use these three SQLite objects:
@@ -195,11 +158,45 @@ namespace CSharpMaze
 					Ques = readers["Question"].ToString(),
 					Final = readers["AnsFinal"].ToString()
 				};
-				questions.Add(sa);
+				QuestionsList.Add(sa);
             }
             readers.Close();
             // We are ready, now lets cleanup and close our connection:
             sqlite_conn.Close();
+        }
+        #endregion
+        public void Display()
+        {
+            System.Random myRandom = new System.Random();
+            int size = QuestionsList.Count;
+            if (size > 0)
+            {
+                int indexRandom = myRandom.Next(size);
+                //Check if the type of Question is MC, TrueFalse, or ShortAnswer
+                if (QuestionsList[indexRandom].GetType() == typeof(MultipleChoice))
+                {
+                    gbMC.Visibility = System.Windows.Visibility.Visible;
+                    gbSA.Visibility = System.Windows.Visibility.Hidden;
+                    gbTF.Visibility = System.Windows.Visibility.Hidden;
+                }
+                else if (QuestionsList[indexRandom].GetType() == typeof(TrueFalse))
+                {
+                    gbMC.Visibility = System.Windows.Visibility.Hidden;
+                    gbSA.Visibility = System.Windows.Visibility.Hidden;
+                    gbTF.Visibility = System.Windows.Visibility.Visible;
+                }
+                else
+                {
+                    gbMC.Visibility = System.Windows.Visibility.Hidden;
+                    gbSA.Visibility = System.Windows.Visibility.Visible;
+                    gbTF.Visibility = System.Windows.Visibility.Hidden;
+                }
+
+                currentQuestion = QuestionsList[indexRandom];
+                QuestionsList[indexRandom].Display();
+                //After displaying Question, removing it from the list questions
+                QuestionsList.RemoveAt(indexRandom); //store question              
+            }
         }
         public bool IsCorrect(string pAnswer)
         {

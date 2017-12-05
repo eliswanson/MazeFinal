@@ -15,11 +15,13 @@
 		///<para>RestoreFromMemento(Memento m, MazeDriver e, QuestionDriver q)</para>
 		///<para>Restores the objects saved from text file back to the objects</para>
 		///</summary>
-		public void RestoreFromMemento(Memento myMemento, MazeDriver engine, QuestionDriver questions)
+		public void RestoreFromMemento(Memento myMemento, out MazeDriver engine, out QuestionDriver questions, MainWindow mainWindow)
 		{
-			engine.RoomStates = myMemento.ReturnRooms();
+			engine = new MazeDriver(mainWindow.MiniMap, mainWindow.PlayerRoom, myMemento.ReturnRooms(), myMemento.ReturnPlayerLocation(), myMemento.ReturnGraph());
+            questions = new QuestionDriver(mainWindow.gbMCQues, mainWindow.gbSAQues, mainWindow.gbTFQues, myMemento.ReturnQuestions());
+            /*engine.RoomStates = myMemento.ReturnRooms();
 			questions.questions = myMemento.ReturnQuestions();
-			engine.PlayerPoint = myMemento.ReturnPlayerLocation();
+			engine.PlayerPoint = myMemento.ReturnPlayerLocation(); */
 		}
 
 	}

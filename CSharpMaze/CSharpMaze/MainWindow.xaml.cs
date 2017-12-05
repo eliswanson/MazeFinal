@@ -27,20 +27,36 @@ namespace CSharpMaze
 		{
 			RoomState testRoom = new RoomState() { Door1State = 3, Door2State = 3, Door3State = 2, Door4State=2 };
             
-			InitializeComponent();
-            engine = new MazeDriver(this.MiniMap, this.PlayerRoom);
+			InitializeComponent();            
 
 			/****Remove Later ****/
 			gbTFQues.Visibility = System.Windows.Visibility.Hidden;
 			gbMCQues.Visibility = System.Windows.Visibility.Hidden;
 			gbSAQues.Visibility = System.Windows.Visibility.Hidden;
 			 /****End Remove Later ****/
-
-			myQuestionDriver = new QuestionDriver(gbMCQues, gbTFQues, gbSAQues);
+			
 			GenerateHitBoxes();
 			PlayBackgroundMusic();
 
 		}
+        #region
+
+	    #region Save and Loading game	   	    
+        public void NewGame()
+	    {
+	        engine = new MazeDriver(this.MiniMap, this.PlayerRoom);
+	        myQuestionDriver = new QuestionDriver(gbMCQues, gbTFQues, gbSAQues);
+	        CenterPlayer();
+        }
+
+	    public void LoadGame()
+	    {
+	        care.LoadGame();
+	        origin.RestoreFromMemento(care.GetLatestMemento(), out engine, out myQuestionDriver, this);
+	        CenterPlayer();
+        }
+	    #endregion
+        #endregion
         #region Execute Order 66
         void Save_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
@@ -60,9 +76,7 @@ namespace CSharpMaze
 
 		void Load_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			care.LoadGame();
-			origin.RestoreFromMemento(care.GetLatestMemento(), engine, myQuestionDriver);
-			CenterPlayer();
+            LoadGame();
 		}
 
 		void Exit_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -103,6 +117,7 @@ namespace CSharpMaze
 		void Game_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
 			MessageBox.Show("New Game!");
+            NewGame();
 		}
 #endregion
 

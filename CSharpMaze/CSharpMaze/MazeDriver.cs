@@ -14,11 +14,12 @@ namespace CSharpMaze
 
         private readonly Board board;
         private readonly MiniMap miniMap;
-        private readonly Graph<Point> mazeGraph;
+        public Graph<Point> MazeGraph { get; set; } //add if statements to some of these properties? if already set don't change (throw exception?)
 
         public RoomState CurrentRoomState { get; private set; }
         public string CurrentDoorString { get; set; }
         #endregion
+        #region Constructors
         /// <summary>
         /// </summary>
         /// <param name="griMiniMap">Grid for MiniMap</param>
@@ -169,7 +170,7 @@ namespace CSharpMaze
                 }                
             }
         }
-
+        #endregion
         #region Updating minimap and board
         /// <summary>
         /// Updates state of board, minimap and determine win or loss after player answers a question.
@@ -235,7 +236,6 @@ namespace CSharpMaze
             CurrentDoorString = OppositeDoor(door);
         }
         #endregion
-
         #region Helper methods for updating room and player location on minimap
         private RoomState UpdateCurrentRoom(Point newLocation) //Updates CurrentRoom and returns it
         {
@@ -307,7 +307,6 @@ namespace CSharpMaze
             }            
         }
         #endregion
-
         public string OppositeDoor(string door)
         {
             switch (door)

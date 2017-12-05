@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Xml.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Collections;
 
 namespace CSharpMaze
 {
 	class Caretaker
 	{
-		List<Memento> saveStates = new List<Memento>();
+	    readonly List<Memento> saveStates = new List<Memento>();
 
 		///<summary>
 		///<para>Adds the newest save state to a list of saves</para>
