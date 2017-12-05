@@ -10,16 +10,13 @@ using System.Windows.Controls;
 namespace CSharpMaze.QuestionsPackage
 {
 	[Serializable]
-    class MultipleChoice : Ques_Ans, ISerializable
+    class MultipleChoice : Ques_Ans, ISerializable //refactor out controls and make it so display takes groupbox? or textblock, radiobutton label?
     {
         private string strAns1;
         private string strAns2;
         private string strAns3;
         private string strAns4;
-        private GroupBox myGB;
         //private Label lblQues;
-        private TextBlock txbQues;
-        private RadioButton[] rdAns = new RadioButton[4];
 
         #region get/set
         public string Ans1
@@ -44,27 +41,21 @@ namespace CSharpMaze.QuestionsPackage
             get { return this.strAns4; }
             set { this.strAns4 = value; }
         }
+
         #endregion
 
         #region constructor
-        public MultipleChoice(GroupBox gb)
-        {
-            for (int i = 0; i < 4; i++)
-                rdAns[i] = new RadioButton();
-            this.myGB = gb;
-
-        }
-        public MultipleChoice()
-        {
-
-        }
+        public MultipleChoice(GroupBox gb) : base(gb) { }
         #endregion
 
         public override string Display()
         {
-            Grid myGrid = myGB.Content as Grid;
-            myGB.Visibility = Visibility.Visible;
-
+            Grid myGrid = MyBox.Content as Grid;
+            MyBox.Visibility = Visibility.Visible;
+            TextBlock txbQues;
+            RadioButton[] rdAns = new RadioButton[4];
+            for (int i = 0; i < 4; i++)
+                rdAns[i] = new RadioButton();
             //Display question
             //lblQues = myGrid.Children[0] as Label;
             //lblQues.Content = Ques;

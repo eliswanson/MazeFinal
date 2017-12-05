@@ -21,9 +21,9 @@ namespace CSharpMaze
 		///</summary>
 		public Memento(MazeDriver engine, QuestionDriver questions)
 		{
-			this.rooms = engine.rooms;
+			this.rooms = engine.RoomStates;
 			this.questions = questions.questions;
-			this.PlayerLocation = engine.location;
+			this.PlayerLocation = engine.PlayerPoint;
 		}
 
 		public Memento(SerializationInfo info, StreamingContext context)

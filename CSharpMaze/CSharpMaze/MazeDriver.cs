@@ -19,6 +19,10 @@ namespace CSharpMaze
         public RoomState CurrentRoomState { get; private set; }
         public string CurrentDoorString { get; set; }
         #endregion
+        /// <summary>
+        /// </summary>
+        /// <param name="griMiniMap">Grid for MiniMap</param>
+        /// <param name="canBoard">Canvas for Board</param>
         public MazeDriver(Grid griMiniMap, Canvas canBoard)
         {
             RoomStates = new RoomState[5][];
@@ -101,11 +105,12 @@ namespace CSharpMaze
         /// <summary>
         /// Used for deserialization
         /// </summary>
-        /// <param name="griMiniMap">Grid that MiniMap will use</param>
-        /// <param name="canBoard">Canvas that Board will use</param>
-        /// <param name="roomStates">RoomState[][] deserialized from file</param>
-        /// <param name="playerPoint">Point deserialized from file</param>
-        public MazeDriver(Grid griMiniMap, Canvas canBoard, RoomState[][] roomStates, Point playerPoint)
+        /// <param name="griMiniMap">Grid for MiniMap</param>
+        /// <param name="canBoard">Canvas for Board</param>
+        /// <param name="roomStates">Deserialized RoomState[][]</param>
+        /// <param name="playerPoint">Deserialized Point</param>
+        /// <param name="mazeGraph">Deserialized Graph</param>
+        public MazeDriver(Grid griMiniMap, Canvas canBoard, RoomState[][] roomStates, Point playerPoint, Graph<Point> mazeGraph)
         {
             RoomStates = roomStates;
             CurrentRoomState = RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X];
@@ -116,7 +121,7 @@ namespace CSharpMaze
             board = new Board(canBoard);
             miniMap = new MiniMap(griMiniMap);
 
-            mazeGraph = new Graph<Point>();
+            this.mazeGraph = mazeGraph;
 
             miniMap.UpdateMap(CurrentRoomState, PlayerPoint);                        
             board.CurrentRoom(CurrentRoomState);
@@ -125,19 +130,22 @@ namespace CSharpMaze
             {
                 for (int row = 0; row < RoomStates[col].Length; row++)
                 {
-                    int leftCol = 0;
-                    int rightCol = RoomStates[col].Length - 1;
-                    int topRow = 0;
-                    int botRow = RoomStates.Length - 1;
-                    Point roomPoint = new Point(row, col);
                     RoomState curRoomState = RoomStates[col][row];
-                        
-                    mazeGraph.AddVertex(roomPoint);
 
-                    if (col != leftCol) //Sets doors to hidden for RoomStates that are on edge of map
+                    miniMap.UpdateMap(col * 5 + row, curRoomState);
+
+                    //int leftCol = 0;
+                    //int rightCol = RoomStates[col].Length - 1;
+                    //int topRow = 0;
+                    //int botRow = RoomStates.Length - 1;
+                    //Point roomPoint = new Point(row, col);
+
+                    /*//Can delete all this if graph is serialized
+                    mazeGraph.AddVertex(roomPoint);
+                    if (col != leftCol) 
                     {
                         Point top = new Point(row, col - 1);
-                        if (mazeGraph.Contains(top))
+                        if (mazeGraph.Contains(top)) //If graph isn't serialized, add condition curRoomState.DoorState1 == 0 || 1
                             mazeGraph.Connect(roomPoint, top);
                     }
                     if (row != topRow)
@@ -157,13 +165,9 @@ namespace CSharpMaze
                         Point right = new Point(row + 1, col);
                         if (mazeGraph.Contains(right))
                             mazeGraph.Connect(roomPoint, right);
-                    }
-
-                    miniMap.UpdateMap(col * 5 + row, curRoomState);
+                    }*/
                 }                
             }
-
-           
         }
 
         #region Updating minimap and board

@@ -4,6 +4,7 @@ using System.IO;
 
 namespace CSharpMaze
 {
+    [Serializable]
     public class Graph<T>
     {
         private Dictionary<T, Vertex> Maze { get; } = new Dictionary<T, Vertex>();
@@ -124,6 +125,7 @@ namespace CSharpMaze
             }
         }
         #endregion       
+        [Serializable]
         private class Vertex
         {
             public readonly LinkedList<Vertex> neighbors = new LinkedList<Vertex>();

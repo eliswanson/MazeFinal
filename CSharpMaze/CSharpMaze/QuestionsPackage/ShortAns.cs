@@ -12,30 +12,18 @@ namespace CSharpMaze.QuestionsPackage
 	[Serializable]
 	class ShortAns : Ques_Ans, ISerializable
     {
-        private GroupBox myGB;
         private Label lblQues;
-        private TextBlock txbQues;
-
 
         #region constructor
-        public ShortAns(GroupBox gb)
-        {
-            this.myGB = gb;
-
-        }
-        public ShortAns()
-        {
-
-        }
+        public ShortAns(GroupBox gb) : base(gb) { }
         #endregion
-
         public override string Display()
         {
             //Display question
-            Grid myGrid = myGB.Content as Grid;
-            txbQues = myGrid.Children[0] as TextBlock;
+            Grid myGrid = MyBox.Content as Grid;
+            TextBlock txbQues = myGrid.Children[0] as TextBlock;
             txbQues.Text = Ques;
-            myGB.Visibility = Visibility.Visible;
+            MyBox.Visibility = Visibility.Visible;
             return this.Final;
         }
 

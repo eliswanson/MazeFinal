@@ -17,9 +17,9 @@
 		///</summary>
 		public void RestoreFromMemento(Memento myMemento, MazeDriver engine, QuestionDriver questions)
 		{
-			engine.rooms = myMemento.ReturnRooms();
+			engine.RoomStates = myMemento.ReturnRooms();
 			questions.questions = myMemento.ReturnQuestions();
-			engine.location = myMemento.ReturnPlayerLocation();
+			engine.PlayerPoint = myMemento.ReturnPlayerLocation();
 		}
 
 	}

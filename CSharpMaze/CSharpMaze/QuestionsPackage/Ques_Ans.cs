@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace CSharpMaze.QuestionsPackage
 {
@@ -11,6 +12,14 @@ namespace CSharpMaze.QuestionsPackage
     {
         protected string strQues;
         protected string strFinal;
+        public GroupBox MyBox { get; set; }
+
+        protected Ques_Ans(GroupBox box)
+        {
+            MyBox = box;
+        }
+
+        protected Ques_Ans() { }
 
         public string Ques
         {

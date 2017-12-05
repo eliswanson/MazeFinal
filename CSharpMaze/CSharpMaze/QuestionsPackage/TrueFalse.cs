@@ -13,10 +13,7 @@ namespace CSharpMaze.QuestionsPackage
     class TrueFalse : Ques_Ans, ISerializable
     {
         private string strAns1;
-        private string strAns2;
-        private GroupBox myGB;
-        private TextBlock txbQues;
-        private RadioButton[] rdAns = new RadioButton[2];
+        private string strAns2;       
 
         #region get/set
         public string Ans1
@@ -31,34 +28,21 @@ namespace CSharpMaze.QuestionsPackage
             set { this.strAns2 = value; }
         }
 
-        public GroupBox MyGB
-        {
-            get { return myGB; }
-            set { this.myGB = value; }
-        }
-
         #endregion
 
         #region constructor
-        public TrueFalse(GroupBox gb)
-        {
-            for (int i = 0; i < 2; i++)
-                rdAns[i] = new RadioButton();
-            this.myGB = gb;
 
-        }
-        public TrueFalse()
-        {
-
-        }
+        public TrueFalse(GroupBox gb) : base (gb) { }
         #endregion
 
         public override string Display()
         {
-            Grid myGrid = myGB.Content as Grid;
-
+            Grid myGrid = MyBox.Content as Grid;
+            RadioButton[]  rdAns = new RadioButton[2];
+            for (int i = 0; i < 2; i++)
+                rdAns[i] = new RadioButton();
             //Display question
-            txbQues = new TextBlock();
+            TextBlock txbQues = new TextBlock();
             txbQues = myGrid.Children[0] as TextBlock;
             txbQues.Text = Ques;
 

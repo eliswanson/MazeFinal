@@ -29,6 +29,28 @@ namespace CSharpMaze
             //Display();
         }
 
+        public QuestionDriver(GroupBox gbMC, GroupBox gbTF, GroupBox gbSA, List<Ques_Ans> ques)
+        {
+            //Query database
+            //Make MC object for each row in MC table and add to questions
+            //Make TF object for each row in TF table and add to questions
+            //Make Short object for each row in Short table and add to questions
+            this.gbMC = gbMC;
+            this.gbTF = gbTF;
+            this.gbSA = gbSA;
+            questions = ques;
+            foreach (Ques_Ans q in questions)
+            {
+                if (q is MultipleChoice)
+                    q.MyBox = gbMC;
+                if (q is TrueFalse)
+                    q.MyBox = gbTF;
+                if (q is ShortAns)
+                    q.MyBox = gbSA;
+            }
+            //Display();
+        }
+
         public void Display()
         {
             System.Random myRandom = new System.Random();
