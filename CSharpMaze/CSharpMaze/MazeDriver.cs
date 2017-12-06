@@ -112,11 +112,11 @@ namespace CSharpMaze
         /// <param name="MazeGraph">Deserialized Graph</param>
         public MazeDriver(Grid griMiniMap, Canvas canBoard, RoomState[][] roomStates, Point playerPoint, Graph<Point> MazeGraph)
         {
-            RoomStates = roomStates;
-            CurrentRoomState = RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X];
-            
-            PlayerPoint = playerPoint;
             endPoint = new Point(4, 4);
+            RoomStates = roomStates;
+            PlayerPoint = playerPoint;
+
+            CurrentRoomState = RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X];                                    
 
             board = new Board(canBoard);
             miniMap = new MiniMap(griMiniMap);
@@ -134,6 +134,8 @@ namespace CSharpMaze
 
                     miniMap.UpdateMap(col * 5 + row, curRoomState);
 
+
+                    miniMap.UpdateMap(CurrentRoomState, PlayerPoint); //update minimap and moves star
                     //int leftCol = 0;
                     //int rightCol = RoomStates[col].Length - 1;
                     //int topRow = 0;
