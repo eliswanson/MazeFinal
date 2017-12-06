@@ -15,6 +15,7 @@ namespace CSharpMaze
         private Ques_Ans currentQuestion;
         public string DifficultyString { get; }
         #endregion
+
         #region Constructors
         public QuestionDriver(GroupBox gbMC, GroupBox gbTF, GroupBox gbSA, string difficulty)
         {
@@ -53,6 +54,7 @@ namespace CSharpMaze
             }
         }
         #endregion
+
         #region Queries and Ques_Ans creation
         private void QueryFromMCTable()
         {
@@ -71,7 +73,7 @@ namespace CSharpMaze
             // create a new SQL command:
             sqlite_cmd = sqlite_conn.CreateCommand();
 
-            sqlite_cmd.CommandText = "Select * from MutipleChoiceTable";
+            sqlite_cmd.CommandText = "Select * from MutipleChoiceTable WHERE Di";
 
 
 
