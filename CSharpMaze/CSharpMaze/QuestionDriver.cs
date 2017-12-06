@@ -13,9 +13,10 @@ namespace CSharpMaze
         private GroupBox gbTF;
         private GroupBox gbSA;
         private Ques_Ans currentQuestion;
+        public string DifficultyString { get; }
         #endregion
         #region Constructors
-        public QuestionDriver(GroupBox gbMC, GroupBox gbTF, GroupBox gbSA)
+        public QuestionDriver(GroupBox gbMC, GroupBox gbTF, GroupBox gbSA, string difficulty)
         {
             //Query database
             //Make MC object for each row in MC table and add to questions
@@ -24,12 +25,13 @@ namespace CSharpMaze
             this.gbMC = gbMC;
             this.gbTF = gbTF;
             this.gbSA = gbSA;
+            DifficultyString = difficulty;
             QueryFromMCTable();
             QueryFromTFTable();
             QueryFromSATable();
             //Display();
         }
-        public QuestionDriver(GroupBox gbMC, GroupBox gbTF, GroupBox gbSA, List<Ques_Ans> ques)
+        public QuestionDriver(GroupBox gbMC, GroupBox gbTF, GroupBox gbSA, List<Ques_Ans> ques, string difficulty)
         {
             //Query database
             //Make MC object for each row in MC table and add to questions
@@ -39,6 +41,7 @@ namespace CSharpMaze
             this.gbTF = gbTF;
             this.gbSA = gbSA;
             QuestionsList = ques;
+            DifficultyString = difficulty;
             foreach (Ques_Ans q in QuestionsList)
             {
                 if (q is MultipleChoice)

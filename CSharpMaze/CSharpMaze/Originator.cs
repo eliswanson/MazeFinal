@@ -18,10 +18,7 @@
 		public void RestoreFromMemento(Memento myMemento, out MazeDriver engine, out QuestionDriver questions, MainWindow mainWindow)
 		{
 			engine = new MazeDriver(mainWindow.MiniMap, mainWindow.PlayerRoom, myMemento.ReturnRooms(), myMemento.ReturnPlayerLocation(), myMemento.ReturnGraph());
-            questions = new QuestionDriver(mainWindow.gbMCQues, mainWindow.gbSAQues, mainWindow.gbTFQues, myMemento.ReturnQuestions());
-            /*engine.RoomStates = myMemento.ReturnRooms();
-			questions.questions = myMemento.ReturnQuestions();
-			engine.PlayerPoint = myMemento.ReturnPlayerLocation(); */
+            questions = new QuestionDriver(mainWindow.gbMCQues, mainWindow.gbTFQues, mainWindow.gbSAQues, myMemento.ReturnQuestions(), myMemento.ReturnDifficulty());
 		}
 
 	}

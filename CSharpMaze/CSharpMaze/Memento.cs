@@ -9,12 +9,13 @@ namespace CSharpMaze
 	class Memento
 	{
 		// The state of all rooms to be fed to MazeDriver
-		private RoomState[][] roomStates;
+		private readonly RoomState[][] roomStates;
 		// The list of questions
-		private List<QuestionsPackage.Ques_Ans> questionsList;
+		private readonly List<QuestionsPackage.Ques_Ans> questionsList;
 		// The point location of player
-		private Point playerLocation;
-	    private Graph<Point> mazeGraph;
+		private readonly Point playerLocation;
+	    private readonly Graph<Point> mazeGraph;
+	    private string difficultyString;
 
 		///<summary>
 		///<para>Creates a new Memento for a game save state Memento(MazeDriver engine, QuestionDriver questions)</para>
@@ -26,7 +27,8 @@ namespace CSharpMaze
 			this.playerLocation = engine.PlayerPoint;
 		    this.mazeGraph = engine.MazeGraph;
 		    this.questionsList = questions.QuestionsList;
-        }
+		    this.difficultyString = questions.DifficultyString;
+		}
 
 	public Memento(SerializationInfo info, StreamingContext context)
 		{
@@ -78,6 +80,11 @@ namespace CSharpMaze
 	    public List<QuestionsPackage.Ques_Ans> ReturnQuestions()
 	    {
 	        return questionsList;
+	    }
+
+	    public string ReturnDifficulty()
+	    {
+	        return difficultyString;
 	    }
     }
 }
