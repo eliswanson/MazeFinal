@@ -28,7 +28,7 @@ namespace CSharpMaze
 		    this.questionsList = questions.QuestionsList;
         }
 
-		public Memento(SerializationInfo info, StreamingContext context)
+	public Memento(SerializationInfo info, StreamingContext context)
 		{
 			try
 			{
@@ -40,11 +40,13 @@ namespace CSharpMaze
 			catch (SerializationException e)
 			{
 				Console.WriteLine(e.Message);
+				throw new SerializationException(e.Message);
 			}
 
 			catch(Exception e)
 			{
 				Console.WriteLine(e.Message);
+				throw new Exception(e.Message);
 			}
 		}
 

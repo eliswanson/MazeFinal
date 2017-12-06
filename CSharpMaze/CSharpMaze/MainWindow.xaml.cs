@@ -52,9 +52,11 @@ namespace CSharpMaze
 	    public void LoadGame()
 	    {
 	        care.LoadGame();
-	        origin.RestoreFromMemento(care.GetLatestMemento(), out engine, out myQuestionDriver, this);
-	        //GenerateHitBoxes();
-            CenterPlayer();
+			PlayerRoom.Children.Clear();
+		    PlayerRoom.Children.Add(Player);
+		    origin.RestoreFromMemento(care.GetLatestMemento(), out engine, out myQuestionDriver, this);
+			GenerateHitBoxes();
+			CenterPlayer();
         }
 	    #endregion
         

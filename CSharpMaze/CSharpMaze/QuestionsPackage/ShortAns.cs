@@ -29,12 +29,12 @@ namespace CSharpMaze.QuestionsPackage
 
 	    public void GetObjectData(SerializationInfo info, StreamingContext context)
 	    {
-		    info.AddValue("lblShortQues", lblQues);
+		    info.AddValue("lblShortQues", lblQues.Content.ToString());
 	    }
 
 	    public ShortAns(SerializationInfo info, StreamingContext context)
 	    {
-		    lblQues = (Label)info.GetValue("lblShortQues", typeof(Label));
+		    lblQues.Content = (String)info.GetValue("lblShortQues", typeof(String));
 	    }
 	}
 }
