@@ -42,6 +42,8 @@ namespace CSharpMaze
 
 			myQuestionDriver = new QuestionDriver(gbMCQues, gbTFQues, gbSAQues);
 			GenerateHitBoxes();
+
+			lblCursorPosition.Text = "Choose the door you want by using keyboard up, left, down, right";
 		}
 
         #region Execute Order 66
@@ -537,6 +539,136 @@ namespace CSharpMaze
 				Close();
 			}
 		}
-#endregion
+		#endregion
+
+		#region Status bar
+		private void btnTF_OK_MouseEnter(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "Press OK to submit your answer";
+		}
+
+		private void btnTF_OK_MouseLeave(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "";
+		}
+
+		private void btnSA_OK_MouseEnter(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "Press OK to submit your answer";
+		}
+
+		private void btnSA_OK_MouseLeave(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "";
+		}
+
+		private void btnMC_OK_MouseEnter(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "Press OK to submit your answer";
+		}
+
+		private void btnMC_OK_MouseLeave(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "";
+		}
+
+		private void txtSA_MouseEnter(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "Please enter your answer (one to three words)";
+		}
+
+		private void txtSA_MouseLeave(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "";
+		}
+
+		//This method used to display instruction depending on the type of question: Multiple choice, T/F, or short answer
+		private void CheckStatusOfTypeQues()
+		{
+			if (gbMCQues.Visibility == 0)
+			{
+				lblCursorPosition.Text = "Answer question by choosing one of them";
+			}
+			else if (gbTFQues.Visibility == 0)
+			{
+				lblCursorPosition.Text = "Answer question by choosing one of them";
+			}
+			else
+			{
+				lblCursorPosition.Text = "Answer question by typing into text box";
+			}
+		}
+
+		private void mitmFile_Save_MouseEnter(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "Choose File / Save if you want to save your game.";
+		}
+
+		private void mitmFile_Save_MouseLeave(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "";
+		}
+
+		private void mitmFile_Load_MouseEnter(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "Choose File / Load if you want to load your game.";
+		}
+
+		private void mitmFile_Load_MouseLeave(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "";
+		}
+
+		private void mitmFile_Game_MouseEnter(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "Choose File / New if you want to start a new game.";
+		}
+
+		private void mitmFile_Game_MouseLeave(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "";
+		}
+
+		private void mitmFile_Exit_MouseEnter(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "Choose File / Exit if you want to exit your game.";
+		}
+
+		private void mitmFile_Exit_MouseLeave(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "";
+		}
+
+		private void mitmFile_About_MouseEnter(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "About the game";
+		}
+
+		private void mitmFile_About_MouseLeave(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "";
+		}
+
+		private void mitmFile_Instructions_MouseEnter(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "Instructions for the game";
+		}
+
+		private void mitmFile_Instructions_MouseLeave(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "";
+		}
+
+
+		private void MitmFile_Settings_OnMouseLeave(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "";
+		}
+		#endregion
+
+		private void MitmFile_Settings_OnMouseEnter(object sender, MouseEventArgs e)
+		{
+			lblCursorPosition.Text = "Click to change Settings ";
+		}
 	}
 }

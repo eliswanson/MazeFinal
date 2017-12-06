@@ -96,7 +96,7 @@ namespace CSharpMaze
 		                     "\nOnce question is answered you'll be placed accordingly to the new room." +
 		                     "\nIf Answer is incorrect a lock will be placed on room door and be locked from using" +
 		                     "\nIf Door is opened then you are able to move through freely" +
-		                     "\nContinue on until reaching the end of the minimap";
+		                     "\nContinue on until reaching and finding the golden token to make it out of the maze!";
 		    txbHowToPlay.Text = strInfo;
 	    }
 

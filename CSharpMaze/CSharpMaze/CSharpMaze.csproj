@@ -193,6 +193,7 @@
     <Resource Include="okbutton.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="coin.png" />
     <Content Include="Footsteps.wav" />
     <Content Include="Is Anybody Home_.mp3" />
   </ItemGroup>
