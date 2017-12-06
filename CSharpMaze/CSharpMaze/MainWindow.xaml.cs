@@ -44,7 +44,7 @@ namespace CSharpMaze
         public void NewGame()
 	    {
 	        engine = new MazeDriver(this.MiniMap, this.PlayerRoom);
-	        myQuestionDriver = new QuestionDriver(gbMCQues, gbTFQues, gbSAQues);
+	        myQuestionDriver = new QuestionDriver(gbMCQues, gbTFQues, gbSAQues, "Medium");
 		    GenerateHitBoxes();
 			CenterPlayer();
         }
