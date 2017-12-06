@@ -117,7 +117,7 @@ namespace CSharpMaze
             PlayerPoint = playerPoint;
 
             CurrentRoomState = RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X];                                    
-
+			
             board = new Board(canBoard);
             miniMap = new MiniMap(griMiniMap);
 
@@ -327,6 +327,11 @@ namespace CSharpMaze
                     throw new ArgumentException("Bad door string passed");
             }
         }
+
+	    public void ResetMiniMap()
+	    {
+		    miniMap.Reset();
+	    }
     }
 
 }

@@ -12,7 +12,14 @@ namespace CSharpMaze.QuestionsPackage
     {
         protected string strQues;
         protected string strFinal;
-        public GroupBox MyBox { get; set; }
+		[NonSerialized]
+	    protected GroupBox myBox;
+
+	    public GroupBox MyBox
+	    {
+		    get { return myBox; }
+		    set { myBox = value; }
+	    }
 
         protected Ques_Ans(GroupBox box)
         {

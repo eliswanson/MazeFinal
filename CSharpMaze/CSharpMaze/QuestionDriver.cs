@@ -48,7 +48,6 @@ namespace CSharpMaze
                 if (q is ShortAns)
                     q.MyBox = gbSA;
             }
-            //Display();
         }
         #endregion
         #region Queries and Ques_Ans creation

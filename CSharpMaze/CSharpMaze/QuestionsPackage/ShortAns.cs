@@ -10,12 +10,11 @@ using System.Windows.Controls;
 namespace CSharpMaze.QuestionsPackage
 {
 	[Serializable]
-	class ShortAns : Ques_Ans, ISerializable
+	class ShortAns : Ques_Ans
     {
-        private Label lblQues;
+		#region constructor
 
-        #region constructor
-        public ShortAns(GroupBox gb) : base(gb) { }
+        public ShortAns(GroupBox gb) : base(gb) { } 
         #endregion
         public override string Display()
         {
@@ -26,15 +25,5 @@ namespace CSharpMaze.QuestionsPackage
             MyBox.Visibility = Visibility.Visible;
             return this.Final;
         }
-
-	    public void GetObjectData(SerializationInfo info, StreamingContext context)
-	    {
-		    info.AddValue("lblShortQues", lblQues.Content.ToString());
-	    }
-
-	    public ShortAns(SerializationInfo info, StreamingContext context)
-	    {
-		    lblQues.Content = (String)info.GetValue("lblShortQues", typeof(String));
-	    }
 	}
 }

@@ -93,5 +93,18 @@ namespace CSharpMaze
             this.player.SetValue(Grid.RowProperty, (int)playerLocation.Y);
             this.player.SetValue(Grid.ColumnProperty, (int)playerLocation.X);
         }
+
+	    public void Reset()
+	    {
+
+			for(int i = 0; i < Map.Children.Count-1; i++)
+			{
+				MiniMapRoom rooms = (MiniMapRoom) Map.Children[i];
+				rooms.door1.Fill = new SolidColorBrush(Colors.SaddleBrown);
+				rooms.door2.Fill = new SolidColorBrush(Colors.SaddleBrown);
+				rooms.door3.Fill = new SolidColorBrush(Colors.SaddleBrown);
+				rooms.door4.Fill = new SolidColorBrush(Colors.SaddleBrown);
+			}
+	    }
     }
 }

@@ -54,6 +54,7 @@ namespace CSharpMaze
 	        care.LoadGame();
 			PlayerRoom.Children.Clear();
 		    PlayerRoom.Children.Add(Player);
+			engine.ResetMiniMap();
 		    origin.RestoreFromMemento(care.GetLatestMemento(), out engine, out myQuestionDriver, this);
 			GenerateHitBoxes();
 			CenterPlayer();

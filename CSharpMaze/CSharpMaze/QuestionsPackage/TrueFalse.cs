@@ -10,7 +10,7 @@ using System.Windows.Controls;
 namespace CSharpMaze.QuestionsPackage
 {
 	[Serializable]
-    class TrueFalse : Ques_Ans, ISerializable
+    class TrueFalse : Ques_Ans//, ISerializable
     {
         private string strAns1;
         private string strAns2;       
@@ -58,7 +58,7 @@ namespace CSharpMaze.QuestionsPackage
             return this.Final;
         }
 
-	    public void GetObjectData(SerializationInfo info, StreamingContext context)
+	   /* public void GetObjectData(SerializationInfo info, StreamingContext context)
 	    {
 		    info.AddValue("TFAnswer1", strAns1);
 		    info.AddValue("TFAnswer2", strAns2);
@@ -68,6 +68,6 @@ namespace CSharpMaze.QuestionsPackage
 	    {
 		    strAns1 = (String)info.GetValue("TFAnswer1", typeof(String));
 		    strAns2 = (String)info.GetValue("TFAnswer2", typeof(String));
-	    }
+	    }*/
 	}
 }

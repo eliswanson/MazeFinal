@@ -42,10 +42,12 @@ namespace CSharpMaze
 			catch (FileNotFoundException e)
 			{
 				Console.WriteLine(e.Message);
+				throw new FileNotFoundException(e.Message);
 			}
 			catch (Exception e)
 			{
 				Console.WriteLine(e.Message);
+				throw new Exception(e.Message);
 			}
 			
 
@@ -66,10 +68,12 @@ namespace CSharpMaze
 			catch (FileNotFoundException e)
 			{
 				Console.WriteLine(e.Message);
+				throw new FileNotFoundException(e.Message);
 			}
 			catch(FileLoadException e)
 			{
 				Console.WriteLine(e.Message);
+				throw new Exception(e.Message);
 			}
 		}
 	}

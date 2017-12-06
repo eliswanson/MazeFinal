@@ -10,7 +10,7 @@ using System.Windows.Controls;
 namespace CSharpMaze.QuestionsPackage
 {
 	[Serializable]
-    class MultipleChoice : Ques_Ans, ISerializable //refactor out controls and make it so display takes groupbox? or textblock, radiobutton label?
+    class MultipleChoice : Ques_Ans//, ISerializable //refactor out controls and make it so display takes groupbox? or textblock, radiobutton label?
     {
         private string strAns1;
         private string strAns2;
@@ -77,7 +77,7 @@ namespace CSharpMaze.QuestionsPackage
             return this.Final;
         }
 
-	    public void GetObjectData(SerializationInfo info, StreamingContext context)
+	   /* public void GetObjectData(SerializationInfo info, StreamingContext context)
 	    {
 		    info.AddValue("MCAnswer1", strAns1);
 		    info.AddValue("MCAnswer2", strAns2);
@@ -91,6 +91,6 @@ namespace CSharpMaze.QuestionsPackage
 		    strAns2 = (String)info.GetValue("MCAnswer2", typeof(String));
 		    strAns3 = (String)info.GetValue("MCAnswer3", typeof(String));
 		    strAns4 = (String)info.GetValue("MCAnswer4", typeof(String));
-	    }
+	    }*/
 	}
 }
