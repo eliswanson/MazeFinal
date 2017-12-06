@@ -16,15 +16,11 @@ namespace CSharpMaze
             GridSettings.Visibility = System.Windows.Visibility.Hidden;
         }
 
-
-
-
-
-
         private void ImgStartGame_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             MainWindow myMain = new MainWindow();
             this.Hide();
+			myMain.NewGame();
             //myMain.Owner = this;
             myMain.ShowDialog();
             this.Close();

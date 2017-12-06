@@ -35,18 +35,18 @@ namespace CSharpMaze
 			gbSAQues.Visibility = System.Windows.Visibility.Hidden;
 			 /****End Remove Later ****/
 			
-			GenerateHitBoxes();
 			PlayBackgroundMusic();
 
 		}
-        #region
+     
 
 	    #region Save and Loading game	   	    
         public void NewGame()
 	    {
 	        engine = new MazeDriver(this.MiniMap, this.PlayerRoom);
 	        myQuestionDriver = new QuestionDriver(gbMCQues, gbTFQues, gbSAQues);
-	        CenterPlayer();
+		    GenerateHitBoxes();
+			CenterPlayer();
         }
 
 	    public void LoadGame()
@@ -56,7 +56,7 @@ namespace CSharpMaze
 	        CenterPlayer();
         }
 	    #endregion
-        #endregion
+        
         #region Execute Order 66
         void Save_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{

@@ -7,10 +7,10 @@ namespace CSharpMaze
     class MazeDriver
     {
         #region fields and properties
-        public RoomState[][] RoomStates { get; set; }         
+        public RoomState[][] RoomStates; //{ get; set; }         
 
         private readonly Point endPoint;
-        public Point PlayerPoint { get; set; }
+	    public Point PlayerPoint;// { get; set; }
 
         private readonly Board board;
         private readonly MiniMap miniMap;
@@ -179,16 +179,16 @@ namespace CSharpMaze
         {
             if (answer) //open door and move player
             {
-                UpdateRoom(1, RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X], CurrentDoorString); //open door in the current room
-                miniMap.UpdateMap((int)PlayerPoint.Y * 5 + (int)PlayerPoint.X, RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X]); //update minimap  
+				CurrentRoomState = UpdateRoom(1, PlayerPoint, CurrentDoorString); //open door in the current room
+                miniMap.UpdateMap((int)PlayerPoint.Y * 5 + (int)PlayerPoint.X, CurrentRoomState); //update minimap  
 
                 PlayerPoint = UpdateLocation(PlayerPoint, CurrentDoorString); //change PlayerLocation of player                                              
 
                 CurrentDoorString = OppositeDoor(CurrentDoorString); //get door opposite of the one opened      
 
-                UpdateRoom(1, RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X], CurrentDoorString); //open door in room player moved to
-                miniMap.UpdateMap(RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X], PlayerPoint); //update minimap and moves star
-                board.CurrentRoom(RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X]); //update board
+	            CurrentRoomState = UpdateRoom(1, PlayerPoint, CurrentDoorString); //open door in room player moved to
+                miniMap.UpdateMap(CurrentRoomState, PlayerPoint); //update minimap and moves star
+                board.CurrentRoom(CurrentRoomState); //update board
 
                 UpdateCurrentRoom(PlayerPoint);
                 if (IsWinner()) //checks to see if winner
@@ -199,14 +199,14 @@ namespace CSharpMaze
                 RoomState otherRoom; //used for room on other side of door
                 Point otherPoint;
 
-                UpdateRoom(2, RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X], CurrentDoorString);
-                miniMap.UpdateMap((int)PlayerPoint.Y * 5 + (int)PlayerPoint.X, RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X]); //update current room
+	            CurrentRoomState = UpdateRoom(2, PlayerPoint, CurrentDoorString);
+                miniMap.UpdateMap((int)PlayerPoint.Y * 5 + (int)PlayerPoint.X, CurrentRoomState); //update current room
 
                 otherPoint = UpdateLocation(PlayerPoint, CurrentDoorString); //get point for other door
-                otherRoom = UpdateRoom(2, RoomStates[(int)otherPoint.Y][(int)otherPoint.X], OppositeDoor(CurrentDoorString)); //update room on other side of door    
+                otherRoom = UpdateRoom(2, otherPoint, OppositeDoor(CurrentDoorString)); //update room on other side of door    
 
                 miniMap.UpdateMap((int)otherPoint.Y * 5 + (int)otherPoint.X, otherRoom); //update minimap for room on other side of the door
-                board.CurrentRoom(RoomStates[(int)PlayerPoint.Y][(int)PlayerPoint.X]);
+                board.CurrentRoom(CurrentRoomState);
 
                 MazeGraph.Disconnect(PlayerPoint, otherPoint);
 

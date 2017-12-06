@@ -8,7 +8,7 @@ namespace CSharpMaze
     class QuestionDriver
     {
         #region Properties and fields              
-        public List<Ques_Ans> QuestionsList { get; set; } // add if statement? if list not null, don't set?
+        public List<Ques_Ans> QuestionsList { get; set; } = new List<Ques_Ans>(); // add if statement? if list not null, don't set?
         private GroupBox gbMC;
         private GroupBox gbTF;
         private GroupBox gbSA;
