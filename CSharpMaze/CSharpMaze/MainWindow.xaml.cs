@@ -53,7 +53,8 @@ namespace CSharpMaze
 	    {
 	        care.LoadGame();
 	        origin.RestoreFromMemento(care.GetLatestMemento(), out engine, out myQuestionDriver, this);
-	        CenterPlayer();
+	        //GenerateHitBoxes();
+            CenterPlayer();
         }
 	    #endregion
         
