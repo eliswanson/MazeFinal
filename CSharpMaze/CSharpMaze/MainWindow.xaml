@@ -174,18 +174,18 @@
 				</Rectangle>
 				<!-- Groupbox Multiple Choice -->
 				<GroupBox x:Name="gbMCQues" HorizontalAlignment="Left" Height="123" Margin="10,4,0,-22" VerticalAlignment="Top" Width="408">
-					<Grid x:Name="griMC" Margin="0,0,0,-22" d:IsHidden="True">
+					<Grid x:Name="griMC" Margin="0,0,0,-22">
 						<TextBlock x:Name="txbMCQues" Margin="0,20,88,89" TextWrapping="Wrap" Width="Auto">Question</TextBlock>
 						<RadioButton x:Name="rdMCAns1" GroupName="MC" Content="Ans1" Margin="47,56,236,61" Width="Auto"/>
 						<RadioButton x:Name="rdMCAns2" GroupName="MC" Content="Ans2" Margin="189,55,0,62" HorizontalAlignment="Left" Width="153"/>
 						<RadioButton x:Name="rdMCAns3" GroupName="MC" Content="Ans3" Margin="47,82,236,35" Width="Auto"/>
 						<RadioButton x:Name="rdMCAns4" GroupName="MC" Content="Ans4" Margin="189,80,77,37" Width="Auto"/>
-						<Button Margin="312,19,4,95" RenderTransformOrigin="1.787,1.952" x:Name="btnMC_OK" Content="OK" Click="BtnMC_OK_Click" MouseEnter="btnMC_OK_MouseEnter" MouseLeave="btnMC_OK_MouseLeave"/>
+						<Button Margin="312,19,4,95" RenderTransformOrigin="1.787,1.952" x:Name="btnMC_OK" Content="OK" Click="BtnMC_OK_Click" MouseEnter="btnMC_OK_MouseEnter" MouseLeave="btnMC_OK_MouseLeave" d:IsHidden="True"/>
 					</Grid>
 				</GroupBox>
 				<!--Groupbox True/False-->
 				<GroupBox x:Name="gbTFQues" HorizontalAlignment="Left" Height="98" Margin="10,4,0,0" VerticalAlignment="Top" Width="408">
-					<Grid x:Name="griTF" Margin="0,0,0,-12">
+					<Grid x:Name="griTF" Margin="0,0,0,-12" d:IsHidden="True">
 						<TextBlock x:Name="txbTFQues"  Margin="0,13,97,56" Width="Auto">Question</TextBlock>
 						<RadioButton x:Name="rdTFAns1" GroupName="TF" Content="Ans1" Margin="50,62,276,20"/>
 						<RadioButton x:Name="rdTFAns2" GroupName="TF" Content="Ans2" Margin="155,62,0,20" HorizontalAlignment="Left" Width="109"/>
@@ -193,7 +193,7 @@
 					</Grid>
 				</GroupBox>
 				<!--Short Answer-->
-				<GroupBox x:Name="gbSAQues" HorizontalAlignment="Left" Margin="10,10,0,0" Width="420" Height="123" VerticalAlignment="Top" d:IsHidden="True">
+				<GroupBox x:Name="gbSAQues" HorizontalAlignment="Left" Margin="10,12,0,0" Width="420" Height="123" VerticalAlignment="Top">
 					<Grid x:Name="griSA" Margin="12,32,53,9" d:IsHidden="True">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="14*"/>
