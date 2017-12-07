@@ -12,6 +12,7 @@ namespace CSharpMaze.QuestionsPackage
     {
         protected string strQues;
         protected string strFinal;
+        protected string strDiff;
 		[NonSerialized]
 	    protected GroupBox myBox;
 
@@ -38,6 +39,12 @@ namespace CSharpMaze.QuestionsPackage
         {
             get { return this.strFinal; }
             set { this.strFinal = value; }
+        }
+
+        public string Diff
+        {
+            get { return this.strDiff; }
+            set { this.strDiff = value; }
         }
         public abstract string Display();
     }
