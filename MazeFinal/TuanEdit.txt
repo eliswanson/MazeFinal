@@ -1,6 +1,0 @@
-
-	I just finish 
-		BUTTON ROLL OVER
-		POP UP window when user  lost or won
-	and merge them together 
-	
