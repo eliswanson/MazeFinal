@@ -269,13 +269,13 @@ namespace CSharpMaze
 	    public void AboutGame()
 	    {
 		    string strInfo = "";
-		    strInfo += "	  The C# Trivia Maze Game\n\n";
-		    strInfo += " Test your C# knowledge while making your way through a dungeonesque maze filled with over 150 questions!" +
-		               "\nSelect the difficulty of questions to and make your way to the token of graditude\n" +
+		    strInfo += "    The C# Trivia Maze Game\n\n";
+		    strInfo += "Test your C# knowledge while making your way through a dungeonesque maze filled with over 150 questions!" +
+		               "\nSelect the difficulty of questions and make your way to the token of graditude.\n" +
 		               "Think you have what it takes?\n\n";
 		    strInfo += "Version 1.0.0\n";
 		    strInfo += ".Net Framework 6.1\n";
-		    strInfo += "32/64 bit\n";
+		    strInfo += "32/64 bit\n\n";
 		    strInfo += "Developers:\n" +
 		               "	Andrew Combs\n" +
 		               "	Eli Swanson\n" +
@@ -302,14 +302,18 @@ namespace CSharpMaze
 		//This method used to back to main menu
 		private void BtnBackHelp_Click(object sender, RoutedEventArgs e)
         {
-			if (myMain.MenuReference == null)
-				this.BackToMainMenu();
-			else
-			{
-				Hide();
-				BackToMainMenu();
-			}
-		}
+            if (myMain.MenuReference == null)
+            {
+                this.BackToMainMenu();
+                ResetSaveBtns();
+            }
+            else
+            {
+                Hide();
+                BackToMainMenu();
+                ResetSaveBtns();
+            }
+        }
 
         private void BackToMainMenu()
         {
@@ -331,15 +335,26 @@ namespace CSharpMaze
 				rdMedium.IsChecked = true;
 				difficultyLevel = rdMedium.Content.ToString();
 				this.BackToMainMenu();
+			    
+
 			}
 
 			else
 			{
 				BackGroundMusic.Volume = 0.5;
 				SldVolume.Value = 0.5;
-				InGameMenuHide(); ;
+				InGameMenuHide(); 
+			   
+
 			}
 		}
+
+        private void ResetSaveBtns()
+        {
+            RdGameOne.IsChecked = false;
+            RdGameTwo.IsChecked = false;
+            RdGameThree.IsChecked = false;
+        }
 
         private void BtnSaveSettings_Click(object sender, RoutedEventArgs e)
         {

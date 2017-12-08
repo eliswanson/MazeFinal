@@ -58,9 +58,9 @@ namespace CSharpMaze
         private void InitializeQuestions()
         {
             List<Ques_Ans>[] questionsListArray = new List<Ques_Ans>[3];
-            questionsListArray[0] = new List<Ques_Ans>(QueryFromMCTable(-1));
-            questionsListArray[1] = new List<Ques_Ans>(QueryFromTFTable(-1));
-            questionsListArray[2] = new List<Ques_Ans>(QueryFromSATable(-1));
+            questionsListArray[0] = new List<Ques_Ans>(QueryFromMCTable());
+            questionsListArray[1] = new List<Ques_Ans>(QueryFromTFTable());
+            questionsListArray[2] = new List<Ques_Ans>(QueryFromSATable());
 
             switch (DifficultyString)
             {
@@ -82,7 +82,7 @@ namespace CSharpMaze
         }
 
         #region DB queries to create Lists
-        private List<MultipleChoice> QueryFromMCTable(int delete)
+        private List<MultipleChoice> QueryFromMCTable()
         {
             SQLiteConnection sqlite_conn;
             SQLiteCommand sqlite_cmd;
@@ -115,7 +115,7 @@ namespace CSharpMaze
             sqlite_conn.Close();
             return mcList;
         }
-        private List<TrueFalse> QueryFromTFTable(int delete)
+        private List<TrueFalse> QueryFromTFTable()
         {
             SQLiteConnection sqlite_conn;
             SQLiteCommand sqlite_cmd;
@@ -146,7 +146,7 @@ namespace CSharpMaze
             sqlite_conn.Close();
             return tfList;
         }
-        private List<ShortAns> QueryFromSATable(int delete)
+        private List<ShortAns> QueryFromSATable()
         {
             SQLiteConnection sqlite_conn;
             SQLiteCommand sqlite_cmd;

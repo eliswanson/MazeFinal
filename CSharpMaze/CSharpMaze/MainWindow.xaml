@@ -9,7 +9,7 @@
 		Background="Black"
 		gif:ImageBehavior.AnimateInDesignMode="True"
         ResizeMode="NoResize"
-        Title="MainWindow" Height="447" Width="510" PreviewKeyDown="Window_PreviewKeyDown"  WindowStartupLocation="CenterScreen">
+        Title="" Height="447" Width="510" PreviewKeyDown="Window_PreviewKeyDown"  WindowStartupLocation="CenterScreen">
     <!--Textbox with color text is RED-->
     <!--  <Window.Resources>
         <Style TargetType="{x:Type TextBox}">
