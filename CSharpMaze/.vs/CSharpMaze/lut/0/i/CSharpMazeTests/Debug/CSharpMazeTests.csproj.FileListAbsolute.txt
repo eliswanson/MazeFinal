@@ -1,0 +1,9 @@
+C:\Users\Eli\Source\Repos\MazeFinal\CSharpMaze\.vs\CSharpMaze\lut\0\b\CSharpMazeTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\Eli\Source\Repos\MazeFinal\CSharpMaze\.vs\CSharpMaze\lut\0\b\CSharpMazeTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\Eli\Source\Repos\MazeFinal\CSharpMaze\.vs\CSharpMaze\lut\0\b\CSharpMazeTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\Eli\Source\Repos\MazeFinal\CSharpMaze\.vs\CSharpMaze\lut\0\b\CSharpMazeTests\bin\Debug\CSharpMazeTests.dll
+C:\Users\Eli\Source\Repos\MazeFinal\CSharpMaze\.vs\CSharpMaze\lut\0\b\CSharpMazeTests\bin\Debug\CSharpMazeTests.pdb
+C:\Users\Eli\Source\Repos\MazeFinal\CSharpMaze\.vs\CSharpMaze\lut\0\i\CSharpMazeTests\Debug\CSharpMazeTests.csprojResolveAssemblyReference.cache
+C:\Users\Eli\Source\Repos\MazeFinal\CSharpMaze\.vs\CSharpMaze\lut\0\i\CSharpMazeTests\Debug\CSharpMazeTests.csproj.CoreCompileInputs.cache
+C:\Users\Eli\Source\Repos\MazeFinal\CSharpMaze\.vs\CSharpMaze\lut\0\i\CSharpMazeTests\Debug\CSharpMazeTests.dll
+C:\Users\Eli\Source\Repos\MazeFinal\CSharpMaze\.vs\CSharpMaze\lut\0\i\CSharpMazeTests\Debug\CSharpMazeTests.pdb

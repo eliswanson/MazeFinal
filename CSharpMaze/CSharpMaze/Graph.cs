@@ -8,15 +8,26 @@ namespace CSharpMaze
     public class Graph<T>
     {
         private Dictionary<T, Vertex> Maze { get; } = new Dictionary<T, Vertex>();
+
         /// <summary>
-        /// Creates an undirected and unweighted graph that can contain vertices of an user specified type.
+        /// Creates an undirected and unweighted graph that can contain vertices of an user specified type. Does not allow duplicate vertices.
         /// </summary>
+        public Graph()
+        {
+        }
+
+        #region Vertex Connections
         /// <summary>
         /// Add a new vertex to the graph.
         /// </summary>
         /// <param name="v"></param>
-        #region Vertex Connections
-        public void AddVertex(T v) => Maze.Add(v, new Vertex()); // needs null check?
+        public void AddVertex(T v)
+        {
+            if(v == null)
+                throw new ArgumentNullException();
+            Maze.Add(v, new Vertex()); // needs null check?
+        }
+
         /// <summary>
         /// Check to see if vertex is contained in the graph.
         /// </summary>

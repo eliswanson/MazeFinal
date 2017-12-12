@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpMaze", "CSharpMaze\CSharpMaze.csproj", "{4E1C5DBE-E24E-4B37-BB9C-247A8DC8B618}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpMazeTests", "CSharpMazeTests\CSharpMazeTests.csproj", "{55F6607E-2EEC-4574-9B19-A99977DDFDEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{4E1C5DBE-E24E-4B37-BB9C-247A8DC8B618}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E1C5DBE-E24E-4B37-BB9C-247A8DC8B618}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E1C5DBE-E24E-4B37-BB9C-247A8DC8B618}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55F6607E-2EEC-4574-9B19-A99977DDFDEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55F6607E-2EEC-4574-9B19-A99977DDFDEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55F6607E-2EEC-4574-9B19-A99977DDFDEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55F6607E-2EEC-4574-9B19-A99977DDFDEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
